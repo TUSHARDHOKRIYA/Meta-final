@@ -1,0 +1,44 @@
+# Task 2 (Medium): Python basics → Data Analyst with quiz adaptation
+name: task2_medium
+description: >
+  Student knows Python basics and wants to become a Data Analyst in 3 months.
+  Agent must build a roadmap AND adapt when the student fails 2 quizzes mid-course.
+
+difficulty: medium
+
+student_profile:
+  name: "Jordan Analyst"
+  target_field: "tech"
+  learning_goal: "Become a Data Analyst in 3 months"
+  weekly_hours: 15
+  skills:
+    - skill: "Python"
+      level: "Know till loops and functions"
+      proficiency: 0.4
+  resume_skills:
+    - "python"
+    - "excel"
+  job_description: "Data Analyst position requiring SQL, Python, statistics, and data visualization skills"
+
+expected_topics:
+  - statistics
+  - databases
+  - data_analysis
+  - data_visualization
+  - machine_learning
+
+quiz_failures:
+  - topic_id: "statistics"
+    score: 45
+    step: 8
+  - topic_id: "data_analysis"
+    score: 55
+    step: 14
+
+grading:
+  metric: "roadmap_quality_plus_adaptation"
+  range: [0.0, 1.0]
+  pass_threshold: 0.5
+  description: "50% roadmap quality (topic coverage) + 50% adaptation quality (response to failures)"
+
+max_steps: 50

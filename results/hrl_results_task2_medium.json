@@ -1,0 +1,25 @@
+{
+  "task_id": "task2_medium",
+  "agent": "hrl",
+  "total_timesteps": 5000,
+  "training_time_seconds": 26.8,
+  "eval_mean_reward": -4.67,
+  "eval_std_reward": 0.0,
+  "eval_rewards": [
+    -4.67,
+    -4.67,
+    -4.67,
+    -4.67,
+    -4.67,
+    -4.67,
+    -4.67,
+    -4.67,
+    -4.67,
+    -4.67
+  ],
+  "strategy_usage": {
+    "prerequisite_fill": 450,
+    "project_apply": 400,
+    "quiz_consolidate": 150
+  }
+}

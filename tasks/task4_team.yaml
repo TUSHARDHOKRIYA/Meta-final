@@ -1,0 +1,65 @@
+# Task 4 (Hard): Team Learning — 3 employees with different backgrounds
+name: task4_team
+description: >
+  A startup has 3 employees with different backgrounds needing to all reach
+  job readiness. Engineer knows tech, Designer knows design, Manager knows business.
+  Agent must build a shared learning path that gets ALL THREE to 70%+ readiness.
+
+difficulty: hard
+
+students:
+  - name: "Sam Engineer"
+    target_field: "business"
+    learning_goal: "Cross-train from tech into business strategy"
+    weekly_hours: 10
+    skills:
+      - skill: "Python"
+        level: "Advanced"
+        proficiency: 0.8
+      - skill: "Data Structures"
+        level: "Intermediate"
+        proficiency: 0.6
+    resume_skills: ["python", "data_structures", "web_development", "api_development"]
+
+  - name: "Morgan Designer"
+    target_field: "tech"
+    learning_goal: "Learn technical skills for design-tech hybrid role"
+    weekly_hours: 10
+    skills:
+      - skill: "Design"
+        level: "Expert"
+        proficiency: 0.9
+      - skill: "UX Research"
+        level: "Advanced"
+        proficiency: 0.7
+    resume_skills: ["design", "ux_research", "ui_design"]
+
+  - name: "Riley Manager"
+    target_field: "design"
+    learning_goal: "Understand design thinking for product management"
+    weekly_hours: 10
+    skills:
+      - skill: "Business"
+        level: "Expert"
+        proficiency: 0.85
+      - skill: "Analytics"
+        level: "Intermediate"
+        proficiency: 0.5
+    resume_skills: ["business", "analytics", "strategy"]
+
+grading:
+  metric: "team_learning_quality"
+  range: [0.0, 1.0]
+  pass_threshold: 0.5
+  weights:
+    min_readiness: 0.30
+    avg_readiness: 0.20
+    efficiency: 0.20
+    cross_domain_bridging: 0.15
+    all_complete_bonus: 0.15
+  description: >
+    30% weakest link (min readiness across 3 students) +
+    20% average readiness + 20% efficiency (1 - steps/300) +
+    15% cross-domain topics covered + 15% binary all-complete bonus
+
+max_steps: 300

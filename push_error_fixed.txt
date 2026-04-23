@@ -1,0 +1,110 @@
+﻿git : remote: [31m-----
+------------------------
+------------------------
+--------------------[0m
+        
+At line:1 char:1
++ git push -f hf main > 
+push_error.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo      
+        : NotSpecified: 
+(r    emote: 
+[31m--...---    [0m   
+     :String) [    ], 
+RemoteException
+    + 
+FullyQualifiedError    
+Id : NativeCommandErr   
+ or
+ 
+remote: [31mYour push 
+was rejected because it 
+contains binary 
+files.[0m        
+remote: [31mPlease use 
+https://huggingface.co/d
+ocs/hub/xet to store 
+binary files.[0m       
+ 
+remote: [31mSee also: h
+ttps://huggingface.co/do
+cs/hub/xet/using-xet-sto
+rage#git[0m        
+remote: [31m[0m       
+ 
+remote: [31mOffending 
+files:[0m        
+remote: [31m  - models/
+hrl_task1_easy.zip 
+(ref: 
+refs/heads/main)[0m    
+    
+remote: [31m  - models/
+hrl_task2_medium.zip 
+(ref: 
+refs/heads/main)[0m    
+    
+remote: [31m  - models/
+ppo_edupath_task1_easy.z
+ip (ref: 
+refs/heads/main)[0m    
+    
+remote: [31m  - models/
+ppo_edupath_task2_medium
+.zip (ref: 
+refs/heads/main)[0m    
+    
+remote: [31m  - models/
+ppo_edupath_task3_hard.z
+ip (ref: 
+refs/heads/main)[0m    
+    
+remote: [31m  - models/
+ppo_edupath_task4_team.z
+ip (ref: 
+refs/heads/main)[0m    
+    
+remote: [31m  - models/
+ppo_edupath_task5_deadli
+ne.zip (ref: 
+refs/heads/main)[0m    
+    
+remote: [31m  - models/
+ppo_gnn_task1_easy.zip 
+(ref: 
+refs/heads/main)[0m    
+    
+remote: [31m  - models/
+ppo_gnn_task2_medium.zip
+ (ref: 
+refs/heads/main)[0m    
+    
+remote: [31m  - models/
+ppo_gnn_task3_hard.zip 
+(ref: 
+refs/heads/main)[0m    
+    
+remote: ^[[31m  - models
+/ppo_edupath_task1_easy.
+zip (ref: 
+refs/heads/main)[0m    
+    
+remote: [31m-----------
+------------------------
+------------------------
+--------------[0m      
+  
+To https://huggingface.c
+o/spaces/degree-checker-
+01/dupath-ai-backend
+ ! [remote rejected] 
+main -> main 
+(pre-receive hook 
+declined)
+error: failed to push 
+some refs to 'https://hu
+ggingface.co/spaces/degr
+ee-checker-01/dupath-ai-
+backend'

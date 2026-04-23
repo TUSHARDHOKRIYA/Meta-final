@@ -1,0 +1,2 @@
+rule: {"task1_easy": 0.0, "task2_medium": 0.2083, "task3_hard": 0.0, "task4_team": 0.3859, "task5_deadline": 0.0238}
+react: {"task1_easy": 0.0, "task2_medium": 0.2584, "task3_hard": 0.0, "task4_team": 0.37, "task5_deadline": 0.0225}

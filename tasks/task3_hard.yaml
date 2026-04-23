@@ -1,0 +1,57 @@
+# Task 3 (Hard): Doctor wants to learn AI for healthcare (cross-domain)
+name: task3_hard
+description: >
+  A medical doctor with no tech background wants to learn AI for healthcare applications.
+  Agent must create a cross-domain roadmap bridging medicine to tech,
+  align with a medical AI job description, and pace optimally.
+
+difficulty: hard
+
+student_profile:
+  name: "Dr. Priya Shah"
+  target_field: "healthcare"
+  learning_goal: "Apply AI to medical imaging and clinical data analysis"
+  weekly_hours: 10
+  skills:
+    - skill: "Biology"
+      level: "Expert (MD)"
+      proficiency: 0.9
+    - skill: "Statistics"
+      level: "Basic medical statistics"
+      proficiency: 0.3
+    - skill: "Research"
+      level: "Published researcher"
+      proficiency: 0.8
+  resume_skills:
+    - "medicine"
+    - "clinical research"
+    - "biology"
+    - "basic statistics"
+  job_description: >
+    Medical AI Researcher position at a hospital AI lab.
+    Required: Python, Machine Learning, Deep Learning, Medical Imaging AI,
+    Clinical Data Analysis, NLP for clinical text.
+    Preferred: PyTorch, FHIR/EHR systems, research publications.
+
+expected_topics:
+  - python_basics
+  - python_control_flow
+  - statistics
+  - machine_learning
+  - deep_learning
+  - hc_python_for_health
+  - hc_clinical_data
+  - hc_medical_imaging
+  - hc_medical_nlp
+
+grading:
+  metric: "job_readiness_plus_efficiency_plus_cross_domain"
+  range: [0.0, 1.0]
+  pass_threshold: 0.4
+  weights:
+    job_readiness: 0.4
+    efficiency: 0.3
+    cross_domain_accuracy: 0.3
+  description: "40% JD skills coverage + 30% step efficiency + 30% cross-domain bridging quality"
+
+max_steps: 80

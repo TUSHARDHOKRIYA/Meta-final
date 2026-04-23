@@ -1,0 +1,94 @@
+# EduPath AI — OpenEnv Specification
+spec_version: 1
+name: edupath-ai
+version: "1.0.0"
+description: >
+  Personalized AI tutor RL environment that generates learning roadmaps
+  for any field, adapts to student performance with quizzes, projects,
+  badges, and job readiness features.
+
+author: "EduPath AI Team"
+
+environment:
+  entrypoint: "backend/environment/env.py"
+  class_name: "EduPathEnv"
+
+  observation:
+    type: "Observation"
+    fields:
+      - student_id
+      - target_field
+      - learning_goal
+      - completed_topics
+      - available_topics
+      - current_topic
+      - skill_levels
+      - quiz_history_summary
+      - completed_projects
+      - job_readiness_score
+      - total_steps
+      - badges_earned
+      - weekly_hours
+      - mastery_probabilities
+
+  action:
+    type: "Action"
+    fields:
+      - type: "ActionType enum"
+      - topic_id: "optional string"
+      - project_id: "optional string"
+    action_types:
+      - recommend_topic
+      - assign_quiz
+      - assign_mini_project
+      - assign_capstone
+      - recommend_resource
+      - suggest_event_or_hackathon
+      - mark_job_ready
+
+  reward:
+    type: "Reward"
+    range: [-1.0, 1.0]
+    signals:
+      correct_prerequisite: 0.3
+      quiz_pass: 0.2
+      mini_project: 0.4
+      capstone: 0.5
+      job_ready: 1.0
+      redundant_action: -0.1
+      skipped_prerequisite: -0.2
+
+tasks:
+  - path: "tasks/task1_easy.yaml"
+    difficulty: easy
+    description: "Beginner Python sequencing"
+  - path: "tasks/task2_medium.yaml"
+    difficulty: medium
+    description: "Data Analyst roadmap with quiz adaptation"
+  - path: "tasks/task3_hard.yaml"
+    difficulty: hard
+    description: "Cross-domain doctor-to-AI roadmap"
+  - path: "tasks/task4_team.yaml"
+    difficulty: hard
+    description: "Team learning — 3 cross-domain employees to job readiness"
+  - path: "tasks/task5_deadline.yaml"
+    difficulty: expert
+    description: "Career transition under 8-week deadline with milestones"
+
+inference:
+  entrypoint: "inference.py"
+  args:
+    - "--all"
+  requirements:
+    - "API_BASE_URL"
+    - "MODEL_NAME"
+    - "HF_TOKEN"
+
+deployment:
+  platform: "docker"
+  dockerfile: "Dockerfile"
+  port: 7860
+  env_vars:
+    - API_BASE_URL
+    - MODEL_NAME
+    - HF_TOKEN

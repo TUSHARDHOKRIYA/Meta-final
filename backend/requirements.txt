@@ -1,0 +1,42 @@
+# ═══ EduPath AI — Docker/Production Requirements ═══
+# Slim set: only what the FastAPI server + inference scripts need at runtime.
+# torch is installed separately in the Dockerfile via --index-url for speed.
+# torch-scatter / torch-sparse are NOT included because they require
+# expensive C++ compilation (>15 min) and are only needed for GNN training.
+# The code already gracefully falls back when they are absent.
+
+# ---------- Core Web Framework ----------
+fastapi>=0.115.0
+uvicorn>=0.30.0
+pydantic>=2.9.0
+python-multipart>=0.0.9
+starlette>=1.0.0
+
+# ---------- Auth / Security ----------
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+
+# ---------- AI / LLM ----------
+openai>=1.0.0
+
+# ---------- Data / Utilities ----------
+pyyaml>=6.0.2
+aiofiles>=24.1.0
+requests>=2.31.0
+numpy>=1.26.4
+
+# ---------- Search ----------
+duckduckgo-search>=6.0.0
+
+# ---------- Supabase ----------
+supabase>=2.0.0
+
+# ---------- OpenEnv ----------
+openenv-core>=0.2.3
+
+# ---------- RL Runtime (inference only — uses pre-built wheels) ----------
+stable-baselines3>=2.3.2
+gymnasium>=0.29.1
+
+# ---------- PyG (header-only, no scatter/sparse compilation) ----------
+torch-geometric>=2.5.3

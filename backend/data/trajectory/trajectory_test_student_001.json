@@ -1,0 +1,955 @@
+{
+  "student_id": "test_student_001",
+  "created_at": "2026-04-21T15:43:20.136638",
+  "student_profile": {
+    "student_id": "test_student_001",
+    "name": "Test Student",
+    "profession": "Data Analyst",
+    "domain": "tech",
+    "target_role": "ML Engineer",
+    "target_domain": "tech",
+    "verified_skills": {
+      "python": "proficient",
+      "sql": "proficient",
+      "pandas": "partial"
+    },
+    "skip_topics": [],
+    "weekly_hours": 15,
+    "deadline_weeks": 12,
+    "total_available_hours": 180,
+    "learning_style": "video",
+    "budget": "free_only",
+    "confidence_level": "medium",
+    "has_interview": false,
+    "interview_weeks": 0
+  },
+  "profiling_conversation": [
+    {
+      "role": "assistant",
+      "content": "Hey there! \ud83d\udc4b I'm your learning mentor at EduPath. I'd love to get to know you a bit so I can build a personalised roadmap that actually fits your life.\n\nLet's start simple \u2014 what do you currently do for work? Or if you're a student, what are you studying?"
+    },
+    {
+      "role": "user",
+      "content": "I'm a data analyst at a bank"
+    },
+    {
+      "role": "assistant",
+      "content": "That's great! Could you tell me a bit about your current role or what you're studying?"
+    },
+    {
+      "role": "user",
+      "content": "I know Python and SQL, some pandas"
+    },
+    {
+      "role": "assistant",
+      "content": "Awesome! So what's the dream? What role or career direction are you aiming for?"
+    },
+    {
+      "role": "user",
+      "content": "I want to become a machine learning engineer"
+    },
+    {
+      "role": "assistant",
+      "content": "Awesome! So what's the dream? What role or career direction are you aiming for?"
+    },
+    {
+      "role": "user",
+      "content": "I have 15 hours a week, 12 weeks deadline"
+    },
+    {
+      "role": "assistant",
+      "content": "Got it! How many hours per week can you realistically dedicate to learning? And do you have any specific deadline or interview coming up?"
+    },
+    {
+      "role": "user",
+      "content": "I prefer video courses, free only"
+    },
+    {
+      "role": "assistant",
+      "content": "Last one \u2014 how do you prefer to learn? Videos, reading, or hands-on projects? And are you looking for free resources only, or open to paid courses too?"
+    }
+  ],
+  "domain_expert_proposal": {
+    "topics": [
+      {
+        "id": "python_basics",
+        "name": "Python Fundamentals",
+        "why": "Required for ML Engineer in tech",
+        "estimated_hours": 8.0,
+        "difficulty": 1,
+        "phase": "foundation",
+        "is_interview_prep": false
+      },
+      {
+        "id": "python_control_flow",
+        "name": "Python Control Flow & Functions",
+        "why": "Required for ML Engineer in tech",
+        "estimated_hours": 6.0,
+        "difficulty": 1,
+        "phase": "foundation",
+        "is_interview_prep": false
+      },
+      {
+        "id": "python_oop",
+        "name": "Object-Oriented Python",
+        "why": "Required for ML Engineer in tech",
+        "estimated_hours": 8.0,
+        "difficulty": 2,
+        "phase": "foundation",
+        "is_interview_prep": false
+      },
+      {
+        "id": "data_structures",
+        "name": "Data Structures & Algorithms",
+        "why": "Required for ML Engineer in tech",
+        "estimated_hours": 12.0,
+        "difficulty": 3,
+        "phase": "core",
+        "is_interview_prep": false
+      },
+      {
+        "id": "version_control",
+        "name": "Git & Version Control",
+        "why": "Required for ML Engineer in tech",
+        "estimated_hours": 4.0,
+        "difficulty": 1,
+        "phase": "foundation",
+        "is_interview_prep": false
+      },
+      {
+        "id": "databases",
+        "name": "SQL & Databases",
+        "why": "Required for ML Engineer in tech",
+        "estimated_hours": 8.0,
+        "difficulty": 2,
+        "phase": "foundation",
+        "is_interview_prep": false
+      },
+      {
+        "id": "statistics",
+        "name": "Statistics & Probability",
+        "why": "Required for ML Engineer in tech",
+        "estimated_hours": 10.0,
+        "difficulty": 2,
+        "phase": "foundation",
+        "is_interview_prep": false
+      },
+      {
+        "id": "data_analysis",
+        "name": "Data Analysis with Pandas",
+        "why": "Required for ML Engineer in tech",
+        "estimated_hours": 8.0,
+        "difficulty": 2,
+        "phase": "foundation",
+        "is_interview_prep": false
+      },
+      {
+        "id": "data_visualization",
+        "name": "Data Visualization",
+        "why": "Required for ML Engineer in tech",
+        "estimated_hours": 6.0,
+        "difficulty": 2,
+        "phase": "foundation",
+        "is_interview_prep": false
+      },
+      {
+        "id": "machine_learning",
+        "name": "Machine Learning Fundamentals",
+        "why": "Required for ML Engineer in tech",
+        "estimated_hours": 15.0,
+        "difficulty": 3,
+        "phase": "core",
+        "is_interview_prep": false
+      },
+      {
+        "id": "deep_learning",
+        "name": "Deep Learning & Neural Networks",
+        "why": "Required for ML Engineer in tech",
+        "estimated_hours": 15.0,
+        "difficulty": 4,
+        "phase": "specialization",
+        "is_interview_prep": false
+      },
+      {
+        "id": "nlp",
+        "name": "Natural Language Processing",
+        "why": "Required for ML Engineer in tech",
+        "estimated_hours": 12.0,
+        "difficulty": 4,
+        "phase": "specialization",
+        "is_interview_prep": false
+      },
+      {
+        "id": "computer_vision",
+        "name": "Computer Vision",
+        "why": "Required for ML Engineer in tech",
+        "estimated_hours": 12.0,
+        "difficulty": 4,
+        "phase": "specialization",
+        "is_interview_prep": false
+      },
+      {
+        "id": "web_development",
+        "name": "Web Development (HTML/CSS/JS)",
+        "why": "Required for ML Engineer in tech",
+        "estimated_hours": 10.0,
+        "difficulty": 2,
+        "phase": "foundation",
+        "is_interview_prep": false
+      },
+      {
+        "id": "api_development",
+        "name": "API Development with FastAPI",
+        "why": "Required for ML Engineer in tech",
+        "estimated_hours": 8.0,
+        "difficulty": 3,
+        "phase": "core",
+        "is_interview_prep": false
+      },
+      {
+        "id": "cloud_computing",
+        "name": "Cloud Computing Basics",
+        "why": "Required for ML Engineer in tech",
+        "estimated_hours": 8.0,
+        "difficulty": 3,
+        "phase": "core",
+        "is_interview_prep": false
+      },
+      {
+        "id": "mlops",
+        "name": "MLOps & Model Deployment",
+        "why": "Required for ML Engineer in tech",
+        "estimated_hours": 10.0,
+        "difficulty": 4,
+        "phase": "specialization",
+        "is_interview_prep": false
+      }
+    ],
+    "rationale": "Deterministic topic selection for tech domain based on curriculum graph."
+  },
+  "prereq_architect_proposal": {
+    "ordered_topics": [
+      {
+        "id": "python_basics",
+        "prerequisites": [],
+        "dependency_type": "soft",
+        "order_position": 1,
+        "order_rationale": "Phase foundation, difficulty 1"
+      },
+      {
+        "id": "python_control_flow",
+        "prerequisites": [
+          "python_basics"
+        ],
+        "dependency_type": "hard",
+        "order_position": 2,
+        "order_rationale": "Phase foundation, difficulty 1"
+      },
+      {
+        "id": "version_control",
+        "prerequisites": [
+          "python_basics"
+        ],
+        "dependency_type": "hard",
+        "order_position": 3,
+        "order_rationale": "Phase foundation, difficulty 1"
+      },
+      {
+        "id": "python_oop",
+        "prerequisites": [
+          "python_control_flow"
+        ],
+        "dependency_type": "hard",
+        "order_position": 4,
+        "order_rationale": "Phase foundation, difficulty 2"
+      },
+      {
+        "id": "databases",
+        "prerequisites": [
+          "python_basics"
+        ],
+        "dependency_type": "hard",
+        "order_position": 5,
+        "order_rationale": "Phase foundation, difficulty 2"
+      },
+      {
+        "id": "statistics",
+        "prerequisites": [],
+        "dependency_type": "soft",
+        "order_position": 6,
+        "order_rationale": "Phase foundation, difficulty 2"
+      },
+      {
+        "id": "data_analysis",
+        "prerequisites": [
+          "python_control_flow",
+          "statistics"
+        ],
+        "dependency_type": "hard",
+        "order_position": 7,
+        "order_rationale": "Phase foundation, difficulty 2"
+      },
+      {
+        "id": "data_visualization",
+        "prerequisites": [
+          "data_analysis"
+        ],
+        "dependency_type": "hard",
+        "order_position": 8,
+        "order_rationale": "Phase foundation, difficulty 2"
+      },
+      {
+        "id": "web_development",
+        "prerequisites": [
+          "python_basics"
+        ],
+        "dependency_type": "hard",
+        "order_position": 9,
+        "order_rationale": "Phase foundation, difficulty 2"
+      },
+      {
+        "id": "data_structures",
+        "prerequisites": [
+          "python_oop"
+        ],
+        "dependency_type": "hard",
+        "order_position": 10,
+        "order_rationale": "Phase core, difficulty 3"
+      },
+      {
+        "id": "machine_learning",
+        "prerequisites": [
+          "data_analysis",
+          "statistics"
+        ],
+        "dependency_type": "hard",
+        "order_position": 11,
+        "order_rationale": "Phase core, difficulty 3"
+      },
+      {
+        "id": "api_development",
+        "prerequisites": [
+          "python_oop",
+          "web_development"
+        ],
+        "dependency_type": "hard",
+        "order_position": 12,
+        "order_rationale": "Phase core, difficulty 3"
+      },
+      {
+        "id": "cloud_computing",
+        "prerequisites": [
+          "api_development"
+        ],
+        "dependency_type": "hard",
+        "order_position": 13,
+        "order_rationale": "Phase core, difficulty 3"
+      },
+      {
+        "id": "deep_learning",
+        "prerequisites": [
+          "machine_learning"
+        ],
+        "dependency_type": "hard",
+        "order_position": 14,
+        "order_rationale": "Phase specialization, difficulty 4"
+      },
+      {
+        "id": "nlp",
+        "prerequisites": [
+          "deep_learning"
+        ],
+        "dependency_type": "hard",
+        "order_position": 15,
+        "order_rationale": "Phase specialization, difficulty 4"
+      },
+      {
+        "id": "computer_vision",
+        "prerequisites": [
+          "deep_learning"
+        ],
+        "dependency_type": "hard",
+        "order_position": 16,
+        "order_rationale": "Phase specialization, difficulty 4"
+      },
+      {
+        "id": "mlops",
+        "prerequisites": [
+          "machine_learning",
+          "cloud_computing"
+        ],
+        "dependency_type": "hard",
+        "order_position": 17,
+        "order_rationale": "Phase specialization, difficulty 4"
+      }
+    ],
+    "dag_rationale": "Deterministic ordering based on phase boundaries and difficulty levels from the curriculum graph."
+  },
+  "feasibility_proposal": {
+    "feasible_topics": [
+      "python_basics",
+      "python_control_flow",
+      "version_control",
+      "python_oop",
+      "databases",
+      "statistics",
+      "data_analysis",
+      "data_visualization",
+      "web_development",
+      "data_structures",
+      "machine_learning",
+      "api_development",
+      "cloud_computing",
+      "deep_learning",
+      "nlp",
+      "computer_vision",
+      "mlops"
+    ],
+    "cut_topics": [],
+    "week_allocations": [
+      {
+        "topic_id": "python_basics",
+        "week_start": 1,
+        "week_end": 1,
+        "hours_allocated": 8.0
+      },
+      {
+        "topic_id": "python_control_flow",
+        "week_start": 2,
+        "week_end": 2,
+        "hours_allocated": 6.0
+      },
+      {
+        "topic_id": "version_control",
+        "week_start": 3,
+        "week_end": 3,
+        "hours_allocated": 4.0
+      },
+      {
+        "topic_id": "python_oop",
+        "week_start": 4,
+        "week_end": 4,
+        "hours_allocated": 8.0
+      },
+      {
+        "topic_id": "databases",
+        "week_start": 5,
+        "week_end": 5,
+        "hours_allocated": 8.0
+      },
+      {
+        "topic_id": "statistics",
+        "week_start": 6,
+        "week_end": 6,
+        "hours_allocated": 10.0
+      },
+      {
+        "topic_id": "data_analysis",
+        "week_start": 7,
+        "week_end": 7,
+        "hours_allocated": 8.0
+      },
+      {
+        "topic_id": "data_visualization",
+        "week_start": 8,
+        "week_end": 8,
+        "hours_allocated": 6.0
+      },
+      {
+        "topic_id": "web_development",
+        "week_start": 9,
+        "week_end": 9,
+        "hours_allocated": 10.0
+      },
+      {
+        "topic_id": "data_structures",
+        "week_start": 10,
+        "week_end": 10,
+        "hours_allocated": 12.0
+      },
+      {
+        "topic_id": "machine_learning",
+        "week_start": 11,
+        "week_end": 11,
+        "hours_allocated": 15.0
+      },
+      {
+        "topic_id": "api_development",
+        "week_start": 12,
+        "week_end": 12,
+        "hours_allocated": 8.0
+      },
+      {
+        "topic_id": "cloud_computing",
+        "week_start": 13,
+        "week_end": 13,
+        "hours_allocated": 8.0
+      },
+      {
+        "topic_id": "deep_learning",
+        "week_start": 14,
+        "week_end": 14,
+        "hours_allocated": 15.0
+      },
+      {
+        "topic_id": "nlp",
+        "week_start": 15,
+        "week_end": 15,
+        "hours_allocated": 12.0
+      },
+      {
+        "topic_id": "computer_vision",
+        "week_start": 16,
+        "week_end": 16,
+        "hours_allocated": 12.0
+      },
+      {
+        "topic_id": "mlops",
+        "week_start": 17,
+        "week_end": 17,
+        "hours_allocated": 10.0
+      }
+    ],
+    "total_hours_planned": 160.0,
+    "budget_used_percent": 98.8,
+    "feasibility_rationale": "Fitted 17 topics into 162h budget. Cut 0 lower-priority topics."
+  },
+  "student_advocate_proposal": {
+    "skip": [],
+    "confidence_boost_order": [
+      "python_basics",
+      "python_control_flow"
+    ],
+    "depth_adjustments": [
+      {
+        "topic_id": "deep_learning",
+        "depth": "deep",
+        "reason": "Advanced topic requiring thorough study"
+      },
+      {
+        "topic_id": "nlp",
+        "depth": "deep",
+        "reason": "Advanced topic requiring thorough study"
+      },
+      {
+        "topic_id": "computer_vision",
+        "depth": "deep",
+        "reason": "Advanced topic requiring thorough study"
+      },
+      {
+        "topic_id": "mlops",
+        "depth": "deep",
+        "reason": "Advanced topic requiring thorough study"
+      }
+    ],
+    "style_flags": [
+      {
+        "topic_id": "python_basics",
+        "flag": "video_heavy",
+        "suggestion": "Prioritize video resources"
+      },
+      {
+        "topic_id": "python_control_flow",
+        "flag": "video_heavy",
+        "suggestion": "Prioritize video resources"
+      },
+      {
+        "topic_id": "version_control",
+        "flag": "video_heavy",
+        "suggestion": "Prioritize video resources"
+      }
+    ],
+    "personalization_notes": "Skipping 0 proficient topics. 2 confidence boosters placed early. Style: video."
+  },
+  "conflict_resolution": {
+    "conflicts": [],
+    "total_conflicts_found": 0,
+    "final_topic_ids": [
+      "python_basics",
+      "python_control_flow",
+      "version_control",
+      "python_oop",
+      "databases",
+      "statistics",
+      "data_analysis",
+      "data_visualization",
+      "web_development",
+      "data_structures",
+      "machine_learning",
+      "api_development",
+      "cloud_computing",
+      "deep_learning",
+      "nlp",
+      "computer_vision",
+      "mlops"
+    ],
+    "resolution_summary": "Resolved 0 conflicts. 17 topics in final roadmap."
+  },
+  "final_roadmap": {
+    "version": 1,
+    "student_id": "test_student_001",
+    "goal": "ML Engineer",
+    "phases": [
+      {
+        "name": "Foundation",
+        "weeks": "Weeks 1-3",
+        "total_hours": 68.0,
+        "topics": [
+          {
+            "id": "python_basics",
+            "name": "Python Fundamentals",
+            "why": "Required for ML Engineer in tech",
+            "estimated_hours": 8.0,
+            "difficulty": 1,
+            "prerequisites": [],
+            "phase": "foundation",
+            "is_interview_prep": false,
+            "is_bridging": false
+          },
+          {
+            "id": "python_control_flow",
+            "name": "Python Control Flow & Functions",
+            "why": "Required for ML Engineer in tech",
+            "estimated_hours": 6.0,
+            "difficulty": 1,
+            "prerequisites": [
+              "python_basics"
+            ],
+            "phase": "foundation",
+            "is_interview_prep": false,
+            "is_bridging": false
+          },
+          {
+            "id": "version_control",
+            "name": "Git & Version Control",
+            "why": "Required for ML Engineer in tech",
+            "estimated_hours": 4.0,
+            "difficulty": 1,
+            "prerequisites": [
+              "python_basics"
+            ],
+            "phase": "foundation",
+            "is_interview_prep": false,
+            "is_bridging": false
+          },
+          {
+            "id": "python_oop",
+            "name": "Object-Oriented Python",
+            "why": "Required for ML Engineer in tech",
+            "estimated_hours": 8.0,
+            "difficulty": 2,
+            "prerequisites": [
+              "python_control_flow"
+            ],
+            "phase": "foundation",
+            "is_interview_prep": false,
+            "is_bridging": false
+          },
+          {
+            "id": "databases",
+            "name": "SQL & Databases",
+            "why": "Required for ML Engineer in tech",
+            "estimated_hours": 8.0,
+            "difficulty": 2,
+            "prerequisites": [
+              "python_basics"
+            ],
+            "phase": "foundation",
+            "is_interview_prep": false,
+            "is_bridging": false
+          },
+          {
+            "id": "statistics",
+            "name": "Statistics & Probability",
+            "why": "Required for ML Engineer in tech",
+            "estimated_hours": 10.0,
+            "difficulty": 2,
+            "prerequisites": [],
+            "phase": "foundation",
+            "is_interview_prep": false,
+            "is_bridging": false
+          },
+          {
+            "id": "data_analysis",
+            "name": "Data Analysis with Pandas",
+            "why": "Required for ML Engineer in tech",
+            "estimated_hours": 8.0,
+            "difficulty": 2,
+            "prerequisites": [
+              "python_control_flow",
+              "statistics"
+            ],
+            "phase": "foundation",
+            "is_interview_prep": false,
+            "is_bridging": false
+          },
+          {
+            "id": "data_visualization",
+            "name": "Data Visualization",
+            "why": "Required for ML Engineer in tech",
+            "estimated_hours": 6.0,
+            "difficulty": 2,
+            "prerequisites": [
+              "data_analysis"
+            ],
+            "phase": "foundation",
+            "is_interview_prep": false,
+            "is_bridging": false
+          },
+          {
+            "id": "web_development",
+            "name": "Web Development (HTML/CSS/JS)",
+            "why": "Required for ML Engineer in tech",
+            "estimated_hours": 10.0,
+            "difficulty": 2,
+            "prerequisites": [
+              "python_basics"
+            ],
+            "phase": "foundation",
+            "is_interview_prep": false,
+            "is_bridging": false
+          }
+        ]
+      },
+      {
+        "name": "Core",
+        "weeks": "Weeks 4-7",
+        "total_hours": 43.0,
+        "topics": [
+          {
+            "id": "data_structures",
+            "name": "Data Structures & Algorithms",
+            "why": "Required for ML Engineer in tech",
+            "estimated_hours": 12.0,
+            "difficulty": 3,
+            "prerequisites": [
+              "python_oop"
+            ],
+            "phase": "core",
+            "is_interview_prep": false,
+            "is_bridging": false
+          },
+          {
+            "id": "machine_learning",
+            "name": "Machine Learning Fundamentals",
+            "why": "Required for ML Engineer in tech",
+            "estimated_hours": 15.0,
+            "difficulty": 3,
+            "prerequisites": [
+              "data_analysis",
+              "statistics"
+            ],
+            "phase": "core",
+            "is_interview_prep": false,
+            "is_bridging": false
+          },
+          {
+            "id": "api_development",
+            "name": "API Development with FastAPI",
+            "why": "Required for ML Engineer in tech",
+            "estimated_hours": 8.0,
+            "difficulty": 3,
+            "prerequisites": [
+              "python_oop",
+              "web_development"
+            ],
+            "phase": "core",
+            "is_interview_prep": false,
+            "is_bridging": false
+          },
+          {
+            "id": "cloud_computing",
+            "name": "Cloud Computing Basics",
+            "why": "Required for ML Engineer in tech",
+            "estimated_hours": 8.0,
+            "difficulty": 3,
+            "prerequisites": [
+              "api_development"
+            ],
+            "phase": "core",
+            "is_interview_prep": false,
+            "is_bridging": false
+          }
+        ]
+      },
+      {
+        "name": "Specialization",
+        "weeks": "Weeks 8-10",
+        "total_hours": 49.0,
+        "topics": [
+          {
+            "id": "deep_learning",
+            "name": "Deep Learning & Neural Networks",
+            "why": "Required for ML Engineer in tech",
+            "estimated_hours": 15.0,
+            "difficulty": 4,
+            "prerequisites": [
+              "machine_learning"
+            ],
+            "phase": "specialization",
+            "is_interview_prep": false,
+            "is_bridging": false
+          },
+          {
+            "id": "nlp",
+            "name": "Natural Language Processing",
+            "why": "Required for ML Engineer in tech",
+            "estimated_hours": 12.0,
+            "difficulty": 4,
+            "prerequisites": [
+              "deep_learning"
+            ],
+            "phase": "specialization",
+            "is_interview_prep": false,
+            "is_bridging": false
+          },
+          {
+            "id": "computer_vision",
+            "name": "Computer Vision",
+            "why": "Required for ML Engineer in tech",
+            "estimated_hours": 12.0,
+            "difficulty": 4,
+            "prerequisites": [
+              "deep_learning"
+            ],
+            "phase": "specialization",
+            "is_interview_prep": false,
+            "is_bridging": false
+          },
+          {
+            "id": "mlops",
+            "name": "MLOps & Model Deployment",
+            "why": "Required for ML Engineer in tech",
+            "estimated_hours": 10.0,
+            "difficulty": 4,
+            "prerequisites": [
+              "machine_learning",
+              "cloud_computing"
+            ],
+            "phase": "specialization",
+            "is_interview_prep": false,
+            "is_bridging": false
+          }
+        ]
+      }
+    ],
+    "total_hours": 160.0,
+    "total_weeks": 12,
+    "total_topics": 17,
+    "confidence_score": 1.0,
+    "interview_ready_by_week": 0,
+    "council_metadata": {
+      "agents_used": 6,
+      "pipeline": "domain_expert \u2192 prereq_architect \u2192 feasibility \u2192 student_advocate \u2192 conflict_matcher \u2192 council_manager"
+    }
+  },
+  "section_history": [
+    {
+      "topic_id": "python_basics",
+      "timestamp": "2026-04-21T15:43:20.766738",
+      "course": {
+        "course_id": "course_1",
+        "title": "Python for Everybody (Coursera - Audit)",
+        "url": "https://www.coursera.org/specializations/python",
+        "selection_rationale": "Best match for ML Engineer based on relevance, difficulty, and content quality scores."
+      },
+      "quiz_result": {
+        "score": 100.0,
+        "passed": true,
+        "correct": 3,
+        "total": 3,
+        "attempt": 1
+      },
+      "flag": "CLEAR"
+    }
+  ],
+  "current_topic_materials": {
+    "topic_id": "python_basics",
+    "topic_name": "Python Fundamentals",
+    "scout_candidates": 3,
+    "selected_course": {
+      "course_id": "course_1",
+      "title": "Python for Everybody (Coursera - Audit)",
+      "url": "https://www.coursera.org/specializations/python",
+      "selection_rationale": "Best match for ML Engineer based on relevance, difficulty, and content quality scores."
+    },
+    "cheat_sheet": {
+      "title": "Python Fundamentals \u2014 Cheat Sheet",
+      "vocabulary": [
+        {
+          "term": "Core concept of Python Fundamentals",
+          "definition": "Fundamental principle underlying Python Fundamentals"
+        },
+        {
+          "term": "Prerequisites",
+          "definition": "Topics you should understand before diving deep"
+        },
+        {
+          "term": "Key framework",
+          "definition": "Primary tool/framework used in Python Fundamentals"
+        },
+        {
+          "term": "Best practice",
+          "definition": "Industry-standard approach to Python Fundamentals"
+        },
+        {
+          "term": "Common pitfall",
+          "definition": "Mistake to avoid when learning Python Fundamentals"
+        }
+      ],
+      "core_concept": "Python Fundamentals is essential for anyone pursuing ML Engineer in tech. It provides the foundational understanding needed to build practical skills.",
+      "why_it_matters_for_your_goal": "As a future ML Engineer, mastering Python Fundamentals will enable you to work with real-world tech challenges effectively.",
+      "watch_for": [
+        "Understand the 'why' before the 'how'",
+        "Practice with real datasets or examples",
+        "Connect this to topics you've already learned"
+      ]
+    },
+    "study_notes": {
+      "title": "Study Notes \u2014 Python Fundamentals",
+      "what_you_should_now_know": [
+        "Core principles of Python Fundamentals",
+        "How Python Fundamentals applies to tech",
+        "Key terminology and definitions",
+        "Basic implementation patterns",
+        "Common use cases and examples"
+      ],
+      "most_important_concept": "The fundamental principle of Python Fundamentals and how it connects to your goal of becoming a ML Engineer.",
+      "domain_connection": "Python Fundamentals is directly applicable to tech workflows and will be built upon in later topics.",
+      "remember_for_quiz": [
+        "Core definition of Python Fundamentals",
+        "Key differences from related concepts",
+        "One practical application in tech"
+      ]
+    },
+    "mini_project": {
+      "title": "Mini Project: Apply Python Fundamentals",
+      "description": "Build a small project demonstrating your understanding of Python Fundamentals using real data relevant to tech.",
+      "dataset": "Public dataset relevant to tech (e.g., from Kaggle or UCI)",
+      "requirements": [
+        "Apply core Python Fundamentals concepts",
+        "Use a real dataset",
+        "Document your approach",
+        "Include at least one visualization or output"
+      ],
+      "domain_reflection": "How does this project connect to your goal of becoming a ML Engineer?",
+      "estimated_hours": 3.0,
+      "pass_criteria": "Project demonstrates understanding of core concepts with working code and documentation."
+    }
+  },
+  "quiz_attempts": {
+    "python_basics": [
+      {
+        "score": 100.0,
+        "passed": true,
+        "correct": 3,
+        "total": 3,
+        "attempt": 1,
+        "timestamp": "2026-04-21T15:43:20.762135"
+      }
+    ]
+  },
+  "flags": [],
+  "intervention_log": [],
+  "bridging_topics_inserted": []
+}

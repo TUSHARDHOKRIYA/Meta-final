@@ -1,0 +1,173 @@
+{
+  "num_episodes": 2,
+  "agents": [
+    "rule",
+    "react"
+  ],
+  "tasks": [
+    "task1_easy",
+    "task2_medium",
+    "task3_hard",
+    "task4_team",
+    "task5_deadline"
+  ],
+  "results": {
+    "rule": {
+      "task1_easy": 0.0,
+      "task2_medium": 0.2083,
+      "task3_hard": 0.0,
+      "task4_team": 0.3859,
+      "task5_deadline": 0.0238
+    },
+    "react": {
+      "task1_easy": 0.0,
+      "task2_medium": 0.2584,
+      "task3_hard": 0.0,
+      "task4_team": 0.37,
+      "task5_deadline": 0.0225
+    }
+  },
+  "reward_results": {
+    "rule": {
+      "task1_easy": -2.35,
+      "task2_medium": -4.3,
+      "task3_hard": -7.35,
+      "task4_team": -5.55,
+      "task5_deadline": -9.35
+    },
+    "react": {
+      "task1_easy": -1.95,
+      "task2_medium": -3.9,
+      "task3_hard": -6.75,
+      "task4_team": -5.15,
+      "task5_deadline": -8.75
+    }
+  },
+  "details": {
+    "rule": {
+      "task1_easy": {
+        "scores": [
+          0.0,
+          0.0
+        ],
+        "rewards": [
+          -2.4,
+          -2.3
+        ],
+        "mean_score": 0.0,
+        "mean_reward": -2.35
+      },
+      "task2_medium": {
+        "scores": [
+          0.2088,
+          0.2078
+        ],
+        "rewards": [
+          -4.3,
+          -4.3
+        ],
+        "mean_score": 0.2083,
+        "mean_reward": -4.3
+      },
+      "task3_hard": {
+        "scores": [
+          0.0,
+          0.0
+        ],
+        "rewards": [
+          -7.4,
+          -7.3
+        ],
+        "mean_score": 0.0,
+        "mean_reward": -7.35
+      },
+      "task4_team": {
+        "scores": [
+          0.4017,
+          0.37
+        ],
+        "rewards": [
+          -5.2,
+          -5.9
+        ],
+        "mean_score": 0.3859,
+        "mean_reward": -5.55
+      },
+      "task5_deadline": {
+        "scores": [
+          0.025,
+          0.0225
+        ],
+        "rewards": [
+          -9.4,
+          -9.3
+        ],
+        "mean_score": 0.0238,
+        "mean_reward": -9.35
+      }
+    },
+    "react": {
+      "task1_easy": {
+        "scores": [
+          0.0,
+          0.0
+        ],
+        "rewards": [
+          -2.0,
+          -1.9
+        ],
+        "mean_score": 0.0,
+        "mean_reward": -1.95
+      },
+      "task2_medium": {
+        "scores": [
+          0.2467,
+          0.27
+        ],
+        "rewards": [
+          -3.9,
+          -3.9
+        ],
+        "mean_score": 0.2584,
+        "mean_reward": -3.9
+      },
+      "task3_hard": {
+        "scores": [
+          0.0,
+          0.0
+        ],
+        "rewards": [
+          -6.8,
+          -6.7
+        ],
+        "mean_score": 0.0,
+        "mean_reward": -6.75
+      },
+      "task4_team": {
+        "scores": [
+          0.37,
+          0.37
+        ],
+        "rewards": [
+          -5.2,
+          -5.1
+        ],
+        "mean_score": 0.37,
+        "mean_reward": -5.15
+      },
+      "task5_deadline": {
+        "scores": [
+          0.0225,
+          0.0225
+        ],
+        "rewards": [
+          -8.8,
+          -8.7
+        ],
+        "mean_score": 0.0225,
+        "mean_reward": -8.75
+      }
+    }
+  },
+  "total_time_seconds": 2.5
+}

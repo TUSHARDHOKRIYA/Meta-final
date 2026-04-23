@@ -1,0 +1,31 @@
+# Task 1 (Easy): Complete beginner wants to learn Python from scratch
+name: task1_easy
+description: >
+  Complete beginner with no programming experience wants to learn Python.
+  Agent must sequence 5 topics correctly, respecting all prerequisites.
+
+difficulty: easy
+
+student_profile:
+  name: "Alex Beginner"
+  target_field: "tech"
+  learning_goal: "Learn Python programming from scratch"
+  weekly_hours: 10
+  skills: []
+  resume_skills: []
+  job_description: null
+
+expected_topics:
+  - python_basics
+  - python_control_flow
+  - python_oop
+  - data_structures
+  - version_control
+
+grading:
+  metric: "percent_correct_sequences"
+  range: [0.0, 1.0]
+  pass_threshold: 0.6
+  description: "Percentage of topics recommended in correct prerequisite order"
+
+max_steps: 30

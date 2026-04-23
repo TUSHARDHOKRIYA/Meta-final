@@ -1,0 +1,185 @@
+/*
+ * EduPath AI — Global Design System
+ * Team KRIYA | Meta Hackathon 2026
+ *
+ * Design tokens, glassmorphism cards, gradient text, glow buttons,
+ * micro-animations, progress bars, badge styles, step indicators,
+ * sidebar navigation, and custom scrollbar.
+ */
+
+@import "tailwindcss";
+
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #111118;
+  --bg-card: #16161f;
+  --text-primary: #f0f0f5;
+  --text-secondary: #9090a0;
+  --accent-blue: #4f6ef7;
+  --accent-purple: #8b5cf6;
+  --accent-green: #22c55e;
+  --accent-amber: #f59e0b;
+  --accent-red: #ef4444;
+  --border: #2a2a35;
+  --glow-blue: rgba(79, 110, 247, 0.15);
+  --glow-purple: rgba(139, 92, 246, 0.15);
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Glassmorphism Cards ───────────────────── */
+.glass-card {
+  background: rgba(22, 22, 31, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 30px var(--glow-blue);
+  transform: translateY(-2px);
+}
+
+/* ── Gradient Text ─────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Glow Button ───────────────────────────── */
+.glow-btn {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  color: white;
+  font-weight: 700;
+  padding: 12px 32px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px var(--glow-blue);
+}
+
+.glow-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--glow-purple);
+}
+
+/* ── Subtle Animations ─────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 10px var(--glow-blue); }
+  50% { box-shadow: 0 0 25px var(--glow-purple); }
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ── Progress Bar ──────────────────────────── */
+.progress-bar {
+  height: 8px;
+  background: var(--bg-card);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+
+/* ── Badge Styles ──────────────────────────── */
+.badge-earned {
+  background: linear-gradient(135deg, rgba(79, 110, 247, 0.2), rgba(139, 92, 246, 0.2));
+  border: 1px solid var(--accent-blue);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.badge-locked {
+  background: rgba(42, 42, 53, 0.5);
+  border: 1px solid var(--border);
+  opacity: 0.5;
+}
+
+/* ── Scrollbar ─────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-blue);
+}
+
+/* ── Step Indicator ────────────────────────── */
+.step-active {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  color: white;
+}
+
+.step-completed {
+  background: var(--accent-green);
+  color: white;
+}
+
+.step-inactive {
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+/* ── Sidebar ───────────────────────────────── */
+.sidebar-item {
+  padding: 12px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-secondary);
+}
+
+.sidebar-item:hover {
+  background: rgba(79, 110, 247, 0.1);
+  color: var(--text-primary);
+}
+
+.sidebar-item-active {
+  background: linear-gradient(135deg, rgba(79, 110, 247, 0.2), rgba(139, 92, 246, 0.1));
+  color: var(--text-primary);
+  border-left: 3px solid var(--accent-blue);
+}

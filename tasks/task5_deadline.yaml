@@ -1,0 +1,65 @@
+# Task 5 (Expert): Career Transition Under Deadline
+name: task5_deadline
+description: >
+  A nurse wants to become a healthcare AI product manager within 8 weeks
+  (56 hours study time at 7hr/week). Agent must hit specific milestones
+  at weeks 2, 4, 6, 8.
+
+difficulty: expert
+
+student_profile:
+  name: "Nurse Taylor"
+  target_field: "healthcare"
+  learning_goal: "Healthcare AI Product Manager"
+  weekly_hours: 7
+  skills:
+    - skill: "Biology"
+      level: "Expert (BSN)"
+      proficiency: 0.85
+    - skill: "Healthcare"
+      level: "Advanced"
+      proficiency: 0.8
+    - skill: "Statistics"
+      level: "Basic"
+      proficiency: 0.2
+  resume_skills: ["nursing", "healthcare", "biology", "patient care"]
+  job_description: >
+    Healthcare AI Product Manager role. Required: understanding of healthcare
+    systems, AI/ML basics, data analytics, business strategy, product management.
+    Must bridge clinical knowledge with technical AI capabilities.
+
+milestones:
+  - week: 2
+    hours_budget: 14
+    requirement: "Complete at least 2 healthcare + 1 tech foundation topic"
+    check: "completed_topics >= 3"
+  - week: 4
+    hours_budget: 28
+    requirement: "Pass quiz on statistics and data_analysis"
+    check: "quiz_passed in [statistics, data_analysis]"
+  - week: 6
+    hours_budget: 42
+    requirement: "Complete 1 mini project spanning healthcare and tech"
+    check: "completed_projects >= 1"
+  - week: 8
+    hours_budget: 56
+    requirement: "Reach 70%+ job readiness and complete capstone"
+    check: "job_readiness >= 0.7"
+
+grading:
+  metric: "career_transition_quality"
+  range: [0.0, 1.0]
+  pass_threshold: 0.4
+  weights:
+    job_readiness: 0.25
+    milestone_completion: 0.25
+    skill_coverage: 0.20
+    efficiency: 0.20
+    early_completion: 0.10
+  description: >
+    25% job readiness at end + 25% milestone completion rate +
+    20% skill coverage (healthcare+tech+business all >0.5 mastery) +
+    20% efficiency (topics per hour vs optimal) +
+    10% early completion bonus (job_ready before step 80)
+
+max_steps: 100

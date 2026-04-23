@@ -1,0 +1,24 @@
+{
+  "task_id": "task1_easy",
+  "agent": "hrl",
+  "total_timesteps": 5000,
+  "training_time_seconds": 25.3,
+  "eval_mean_reward": -5.05,
+  "eval_std_reward": 0.0,
+  "eval_rewards": [
+    -5.05,
+    -5.05,
+    -5.05,
+    -5.05,
+    -5.05,
+    -5.05,
+    -5.05,
+    -5.05,
+    -5.05,
+    -5.05
+  ],
+  "strategy_usage": {
+    "prerequisite_fill": 50,
+    "project_apply": 950
+  }
+}
