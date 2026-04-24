@@ -1,0 +1,186 @@
+{
+  "python_basics": {
+    "cached_at": 1777031489.065852,
+    "courses": [
+      {
+        "rank": 1,
+        "title": "Free Python Course with Certification 2026 - Scaler",
+        "url": "https://www.scaler.com/topics/course/python-for-beginners/",
+        "platform": "scaler.com",
+        "quality_score": 1.0,
+        "why_selected": "Ranked #1 for your goal: structured course content, confirmed free access, includes exercises.",
+        "is_free": true,
+        "estimated_hours": null,
+        "description": "Free Python Course with Certification 2026 - Scaler",
+        "source": "scaler.com",
+        "resource_type": "course",
+        "duration_estimate": "~2 hours"
+      },
+      {
+        "rank": 2,
+        "title": "Free Python Course with Certificate: Enroll Now! - Simplilearn",
+        "url": "https://www.simplilearn.com/learn-python-basics-free-course-skillup",
+        "platform": "simplilearn.com",
+        "quality_score": 0.8889,
+        "why_selected": "Ranked #2 for your goal: structured course content, confirmed free access, includes exercises.",
+        "is_free": true,
+        "estimated_hours": null,
+        "description": "Free Python Course with Certificate: Enroll Now! - Simplilearn",
+        "source": "simplilearn.com",
+        "resource_type": "course",
+        "duration_estimate": "~2 hours"
+      },
+      {
+        "rank": 3,
+        "title": "Free Python Course for Beginners with Certificate [2026]",
+        "url": "https://www.mygreatlearning.com/academy/learn-for-free/courses/python-fundamentals-for-beginners",
+        "platform": "mygreatlearning.com",
+        "quality_score": 0.7778,
+        "why_selected": "Ranked #3 for your goal: confirmed free access, includes exercises, credible source.",
+        "is_free": true,
+        "estimated_hours": null,
+        "description": "Free Python Course for Beginners with Certificate [2026]",
+        "source": "mygreatlearning.com",
+        "resource_type": "course",
+        "duration_estimate": "~2 hours"
+      }
+    ]
+  },
+  "machine_learning_fundamentals": {
+    "cached_at": 1777031899.499087,
+    "courses": [
+      {
+        "rank": 1,
+        "title": "AIBryt - Learn AI & Machine Learning | Free Courses & Tutorials 2025",
+        "url": "https://www.aibryt.com/",
+        "platform": "aibryt.com",
+        "quality_score": 0.8889,
+        "why_selected": "Ranked #1 for your goal: structured course content, confirmed free access, includes exercises.",
+        "is_free": true,
+        "estimated_hours": null,
+        "description": "AIBryt - Learn AI & Machine Learning | Free Courses & Tutorials 2025",
+        "source": "aibryt.com",
+        "resource_type": "course",
+        "duration_estimate": "~2 hours"
+      },
+      {
+        "rank": 2,
+        "title": "Machine Learning Full Course 2025 | Machine Learning Tutorial",
+        "url": "https://amazingelearning.com/machine-learning-full-course-2025-machine-learning-tutorial-machine-learning-roadmap-edureka/",
+        "platform": "amazingelearning.com",
+        "quality_score": 0.7778,
+        "why_selected": "Ranked #2 for your goal: confirmed free access, includes exercises, credible source.",
+        "is_free": true,
+        "estimated_hours": null,
+        "description": "Machine Learning Full Course 2025 | Machine Learning Tutorial",
+        "source": "amazingelearning.com",
+        "resource_type": "course",
+        "duration_estimate": "~2 hours"
+      },
+      {
+        "rank": 3,
+        "title": "Machine Learning Full Course (2025) | Machine Learning Course For ...",
+        "url": "https://www.youtube.com/watch?v=RxPpFf10Clk",
+        "platform": "youtube.com",
+        "quality_score": 0.5556,
+        "why_selected": "Ranked #3 for your goal: confirmed free access, includes exercises, up-to-date material.",
+        "is_free": true,
+        "estimated_hours": null,
+        "description": "Machine Learning Full Course (2025) | Machine Learning Course For ...",
+        "source": "youtube.com",
+        "resource_type": "course",
+        "duration_estimate": "~2 hours"
+      }
+    ]
+  },
+  "neural_networks": {
+    "cached_at": 1777031904.6443732,
+    "courses": [
+      {
+        "rank": 1,
+        "title": "Search for courses",
+        "url": "https://www.google.com/search?q=free+online+course",
+        "platform": "google.com",
+        "quality_score": 0.1,
+        "why_selected": "No passing candidates found — please try a broader topic.",
+        "is_free": true,
+        "estimated_hours": null,
+        "description": "Google search fallback",
+        "source": "Google",
+        "resource_type": "search",
+        "duration_estimate": "Varies"
+      }
+    ]
+  },
+  "transformer_architecture": {
+    "cached_at": 1777031910.2262497,
+    "courses": [
+      {
+        "rank": 1,
+        "title": "Search for courses",
+        "url": "https://www.google.com/search?q=free+online+course",
+        "platform": "google.com",
+        "quality_score": 0.1,
+        "why_selected": "No passing candidates found — please try a broader topic.",
+        "is_free": true,
+        "estimated_hours": null,
+        "description": "Google search fallback",
+        "source": "Google",
+        "resource_type": "search",
+        "duration_estimate": "Varies"
+      }
+    ]
+  },
+  "data_structures_and_algorithms": {
+    "cached_at": 1777031915.9382644,
+    "courses": [
+      {
+        "rank": 1,
+        "title": "Search for courses",
+        "url": "https://www.google.com/search?q=free+online+course",
+        "platform": "google.com",
+        "quality_score": 0.1,
+        "why_selected": "No passing candidates found — please try a broader topic.",
+        "is_free": true,
+        "estimated_hours": null,
+        "description": "Google search fallback",
+        "source": "Google",
+        "resource_type": "search",
+        "duration_estimate": "Varies"
+      }
+    ]
+  },
+  "sql_and_databases": {
+    "cached_at": 1777031924.785889,
+    "courses": [
+      {
+        "rank": 1,
+        "title": "如何自学SQL？ - 知乎",
+        "url": "https://www.zhihu.com/question/30357711",
+        "platform": "zhihu.com",
+        "quality_score": 0.1111,
+        "why_selected": "Ranked #1 based on overall quality score.",
+        "is_free": true,
+        "estimated_hours": null,
+        "description": "如何自学SQL？ - 知乎",
+        "source": "zhihu.com",
+        "resource_type": "course",
+        "duration_estimate": "~2 hours"
+      },
+      {
+        "rank": 2,
+        "title": "如何学习 SQL 语言？ - 知乎",
+        "url": "https://www.zhihu.com/question/19552975",
+        "platform": "zhihu.com",
+        "quality_score": 0.1111,
+        "why_selected": "Ranked #2 based on overall quality score.",
+        "is_free": true,
+        "estimated_hours": null,
+        "description": "如何学习 SQL 语言？ - 知乎",
+        "source": "zhihu.com",
+        "resource_type": "course",
+        "duration_estimate": "~2 hours"
+      }
+    ]
+  }
+}
