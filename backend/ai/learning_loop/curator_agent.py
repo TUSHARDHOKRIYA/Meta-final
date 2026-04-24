@@ -70,9 +70,9 @@ def select(scored_candidates: List[Dict],
             if not (c.get("reject_reason") or "").startswith("Hard reject")
         ]
 
-    # If still empty (all hard-rejected), return best non-rejected
-    if not passing and scored_candidates:
-        passing = scored_candidates[:top_n]
+
+    # If still empty (all hard-rejected), leave `passing` empty
+    # so the platform fallback (freeCodeCamp/Coursera/Khan) kicks in below
 
     # Step 2 — profile-based score adjustment
     adjusted = []
@@ -118,22 +118,61 @@ def select(scored_candidates: List[Dict],
             "duration_estimate": _extract_hours_str(c),
         })
 
-    # Guarantee at least 1 result
+    # Guarantee at least 1 result — use direct course platform links
     if not results:
-        results.append({
-            "rank": 1,
-            "title": "Search for courses",
-            "url": "https://www.google.com/search?q=free+online+course",
-            "platform": "google.com",
-            "quality_score": 0.1,
-            "why_selected": "No passing candidates found — please try a broader topic.",
-            "is_free": True,
-            "estimated_hours": None,
-            "description": "Google search fallback",
-            "source": "Google",
-            "resource_type": "search",
-            "duration_estimate": "Varies",
-        })
+        # Try to extract the topic from candidate titles
+        topic_hint = ""
+        for c in scored_candidates[:3]:
+            t = c.get("title", "")
+            if t and t != "Search for courses":
+                topic_hint = t.split(" - ")[0].split(" | ")[0][:40]
+                break
+        topic_q = topic_hint.replace(" ", "+") if topic_hint else "programming"
+
+        results = [
+            {
+                "rank": 1,
+                "title": f"{topic_hint or 'Programming'} - freeCodeCamp",
+                "url": f"https://www.freecodecamp.org/news/search/?query={topic_q}",
+                "platform": "freecodecamp.org",
+                "quality_score": 0.55,
+                "why_selected": "Top free learning platform with hands-on exercises.",
+                "is_free": True,
+                "estimated_hours": None,
+                "description": f"Search freeCodeCamp for free {topic_hint or 'programming'} courses and tutorials",
+                "source": "freeCodeCamp",
+                "resource_type": "course",
+                "duration_estimate": "~2 hours",
+            },
+            {
+                "rank": 2,
+                "title": f"Learn {topic_hint or 'Programming'} - Coursera",
+                "url": f"https://www.coursera.org/search?query={topic_q}",
+                "platform": "coursera.org",
+                "quality_score": 0.5,
+                "why_selected": "University-backed courses, free to audit.",
+                "is_free": True,
+                "estimated_hours": None,
+                "description": f"Top-rated {topic_hint or 'programming'} courses from universities worldwide",
+                "source": "Coursera",
+                "resource_type": "course",
+                "duration_estimate": "~4 hours",
+            },
+            {
+                "rank": 3,
+                "title": f"{topic_hint or 'Programming'} - Khan Academy",
+                "url": f"https://www.khanacademy.org/search?search_again=1&page_search_query={topic_q}",
+                "platform": "khanacademy.org",
+                "quality_score": 0.5,
+                "why_selected": "Free, interactive learning with practice exercises.",
+                "is_free": True,
+                "estimated_hours": None,
+                "description": f"Free {topic_hint or 'programming'} lessons with interactive exercises",
+                "source": "Khan Academy",
+                "resource_type": "course",
+                "duration_estimate": "~2 hours",
+            },
+        ]
 
     logger.info(f"[Curator] Selected {len(results)} courses (from {len(scored_candidates)} candidates)")
     return results

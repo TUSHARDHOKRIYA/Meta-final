@@ -275,18 +275,41 @@ def _legacy_fallback(topic_name: str, topic_id: str) -> List[Dict]:
     except Exception as e:
         logger.warning(f"Legacy fallback lookup failed: {e}")
 
-    # Absolute fallback
+    # Absolute fallback: direct links to known free course platforms
+    topic_q = topic_name.replace(" ", "+")
+    topic_slug = topic_name.lower().replace(" ", "-")
     return [
         {
-            "title": f"Search: {topic_name}",
-            "url": f"https://www.google.com/search?q={topic_name.replace(' ', '+')}+free+course",
-            "description": f"Find free courses and tutorials for {topic_name}",
-            "source": "Google",
+            "title": f"{topic_name} - Free Course on freeCodeCamp",
+            "url": f"https://www.freecodecamp.org/news/search/?query={topic_q}",
+            "description": f"Search freeCodeCamp for free {topic_name} courses, tutorials, and guides",
+            "source": "freeCodeCamp",
             "resource_type": "course",
             "duration_estimate": "~2 hours",
-            "quality_score": 0.1,
-            "platform": "google.com",
+            "quality_score": 0.55,
+            "platform": "freecodecamp.org",
             "is_free": True,
-            "is_fallback": True,
-        }
+        },
+        {
+            "title": f"Learn {topic_name} - Coursera",
+            "url": f"https://www.coursera.org/search?query={topic_q}",
+            "description": f"Find top-rated {topic_name} courses from universities worldwide (free to audit)",
+            "source": "Coursera",
+            "resource_type": "course",
+            "duration_estimate": "~4 hours",
+            "quality_score": 0.5,
+            "platform": "coursera.org",
+            "is_free": True,
+        },
+        {
+            "title": f"{topic_name} Tutorial - W3Schools",
+            "url": f"https://www.w3schools.com/{topic_slug.split('-')[0]}/",
+            "description": f"Interactive {topic_name} tutorial with examples and exercises",
+            "source": "W3Schools",
+            "resource_type": "tutorial",
+            "duration_estimate": "~1.5 hours",
+            "quality_score": 0.45,
+            "platform": "w3schools.com",
+            "is_free": True,
+        },
     ]

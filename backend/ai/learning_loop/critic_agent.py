@@ -17,7 +17,7 @@ Scoring dimensions (max 9 points):
   5. Red flags (penalties)      (0-N subtracted)
   6. Freshness                  (0-1)
 
-PASS threshold: normalised ≥ 0.45  (i.e. ≥ ~4.1 raw points)
+PASS threshold: normalised ≥ 0.30  (i.e. ≥ ~2.7 raw points)
 """
 import asyncio
 import logging
@@ -54,6 +54,12 @@ _CREDIBLE_SIGNALS = [
 _HARD_REJECT_URL = [
     "stackoverflow.com", "reddit.com", "quora.com",
     "medium.com", "stackoverflow", "forum", "discussion",
+    "zhihu.com", "support.google.com", "answers.microsoft.com",
+    "superuser.com", "serverfault.com", "askubuntu.com",
+    "news.ycombinator.com", "twitter.com", "x.com",
+    "facebook.com", "linkedin.com", "pinterest.com",
+    "amazon.com", "ebay.com", "walmart.com",
+    "wikipedia.org",
 ]
 _SOFT_PENALTY_CONTENT = [
     "sponsored", "affiliate", "buy this book", "click here to purchase",
@@ -140,6 +146,24 @@ def _extract_domain(url: str) -> str:
         return "unknown"
 
 
+# Known education domains — get a baseline boost when page fetch fails
+_KNOWN_EDU_DOMAINS = {
+    "coursera.org": 0.6, "edx.org": 0.6, "khanacademy.org": 0.6,
+    "freecodecamp.org": 0.65, "codecademy.com": 0.55, "udemy.com": 0.5,
+    "kaggle.com": 0.6, "fast.ai": 0.65, "huggingface.co": 0.55,
+    "ocw.mit.edu": 0.7, "learn.microsoft.com": 0.55,
+    "developer.mozilla.org": 0.6, "w3schools.com": 0.5,
+    "geeksforgeeks.org": 0.45, "tutorialspoint.com": 0.4,
+    "realpython.com": 0.55, "docs.python.org": 0.5,
+    "reactjs.org": 0.5, "vuejs.org": 0.5, "angular.io": 0.5,
+    "nodejs.org": 0.5, "developer.android.com": 0.5,
+    "cs50.harvard.edu": 0.7, "scrimba.com": 0.55,
+    "theodinproject.com": 0.65, "fullstackopen.com": 0.65,
+    "javascript.info": 0.55, "css-tricks.com": 0.45,
+    "programiz.com": 0.45, "javatpoint.com": 0.4,
+}
+
+
 def score_url(url: str, title: str, snippet: str, page_text: Optional[str]) -> Dict:
     """Score a single candidate URL across 6 quality dimensions.
 
@@ -152,9 +176,47 @@ def score_url(url: str, title: str, snippet: str, page_text: Optional[str]) -> D
     Returns:
         Evaluation dict with score, passed flag, and breakdown.
     """
+    url_lower = url.lower()
+    domain = _extract_domain(url)
+
+    # ── Hard reject: URL matches a Q&A / social / blog site ──
+    for pattern in _HARD_REJECT_URL:
+        if pattern in url_lower or pattern in title.lower():
+            return {
+                "url": url,
+                "title": title,
+                "platform": domain,
+                "score": 0.0,
+                "passed": False,
+                "score_breakdown": {
+                    "is_course": 0, "is_free": 0, "is_structured": 0,
+                    "is_credible": 0, "freshness": 0, "penalties": 9,
+                },
+                "reject_reason": f"Hard reject: matched '{pattern}' in URL/title",
+            }
+
+    # ── Domain reputation shortcut ──
+    # When page_text is None (fetch failed/timeout), use domain reputation
+    # instead of penalising the URL unfairly.
+    if page_text is None:
+        baseline = _KNOWN_EDU_DOMAINS.get(domain, 0)
+        if baseline > 0:
+            logger.debug(f"[Critic] Page fetch failed for {domain} — using baseline {baseline}")
+            return {
+                "url": url,
+                "title": title,
+                "platform": domain,
+                "score": baseline,
+                "passed": baseline >= 0.30,
+                "score_breakdown": {
+                    "is_course": 1, "is_free": 1, "is_structured": 1,
+                    "is_credible": 1, "freshness": 0, "penalties": 0,
+                },
+                "reject_reason": None,
+            }
+
     # Combine all available text for signal detection
     content = " ".join(filter(None, [title, snippet, page_text or ""])).lower()
-    url_lower = url.lower()
 
     # ── Dimension 1: Is it a course? (0-2) ──
     course_hits = _count_signals(content, _COURSE_SIGNALS)
@@ -180,36 +242,11 @@ def score_url(url: str, title: str, snippet: str, page_text: Optional[str]) -> D
 
     # ── Dimension 5: Red flags (penalties) ──
     penalties = 0
-    reject_reason = None
-
-    # Hard reject: URL or title matches a Q&A / social / blog site
-    for pattern in _HARD_REJECT_URL:
-        if pattern in url_lower or pattern in title.lower():
-            reject_reason = f"Hard reject: matched '{pattern}' in URL/title"
-            return {
-                "url": url,
-                "title": title,
-                "platform": _extract_domain(url),
-                "score": 0.0,
-                "passed": False,
-                "score_breakdown": {
-                    "is_course": dim_course,
-                    "is_free": dim_free,
-                    "is_structured": dim_struct,
-                    "is_credible": dim_cred,
-                    "freshness": 0,
-                    "penalties": 9,
-                },
-                "reject_reason": reject_reason,
-            }
-
-    # Soft penalties from content
     for penalty_signal in _SOFT_PENALTY_CONTENT:
         if penalty_signal in content:
             penalties += 1
 
     # ── Dimension 6: Freshness (0-1) ──
-    # Check if content mentions a year >= 2023
     year_matches = re.findall(r"\b(202[3-9]|203\d)\b", content)
     dim_fresh = 1 if year_matches else 0
 
@@ -217,7 +254,13 @@ def score_url(url: str, title: str, snippet: str, page_text: Optional[str]) -> D
     raw = dim_course + dim_free + dim_struct + dim_cred + dim_fresh - penalties
     raw = max(raw, 0)
     normalised = round(raw / 9.0, 4)
-    passed = normalised >= 0.45
+
+    # Boost known education domains slightly
+    domain_boost = _KNOWN_EDU_DOMAINS.get(domain, 0)
+    if domain_boost > 0:
+        normalised = round(min(1.0, normalised + 0.1), 4)
+
+    passed = normalised >= 0.30
 
     return {
         "url": url,
@@ -233,7 +276,7 @@ def score_url(url: str, title: str, snippet: str, page_text: Optional[str]) -> D
             "freshness": dim_fresh,
             "penalties": penalties,
         },
-        "reject_reason": reject_reason,
+        "reject_reason": None,
     }
 
 
