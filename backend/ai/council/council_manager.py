@@ -352,13 +352,70 @@ def _produce_final_roadmap(
     total_hours = sum(p["total_hours"] for p in final_phases)
     total_weeks = student_profile.get("deadline_weeks", 12)
 
+    # ── Build frontend-compatible "weeks" array from phases ──
+    # The frontend renders roadmap.weeks, so we must provide it.
+    weeks = []
+    week_num = 1
+    goal = student_profile.get("target_role", "")
+    for phase in final_phases:
+        for topic in phase["topics"]:
+            weeks.append({
+                "weekNumber": week_num,
+                "title": topic.get("name", topic.get("id", f"Week {week_num}")),
+                "learningObjectives": [
+                    f"Master {topic.get('name', topic.get('id', ''))}",
+                    topic.get("why", f"Essential for {goal}"),
+                ],
+                "skillsCovered": [topic.get("id", topic.get("name", ""))],
+                "estimatedHours": topic.get("estimated_hours", 8),
+                "actionItems": [
+                    f"Study {topic.get('name', '')}",
+                    "Complete practice exercises",
+                    "Review key concepts",
+                ],
+                "resources": [],  # Will be filled by the learning loop
+                "mini_project": {
+                    "title": f"Apply {topic.get('name', '')}",
+                    "description": f"Build a small project using {topic.get('name', '')}",
+                    "requirements": [topic.get("name", "")],
+                } if week_num % 3 == 0 else None,
+                "phase": phase["name"],
+                "is_bridge": topic.get("is_bridging", False),
+            })
+            week_num += 1
+
+    # ── Build capstone projects ──
+    all_skill_ids = [t.get("id", t.get("name", "")) for t in
+                     [topic for phase in final_phases for topic in phase["topics"]]]
+    capstone_projects = [
+        {
+            "title": f"Capstone: {goal} Portfolio Project",
+            "description": f"Build a comprehensive project showcasing all your skills for {goal}",
+            "expected_output": "Complete project with documentation and deployment",
+            "requirements": all_skill_ids[:5] + ["Documentation", "Testing"],
+            "skills_tested": all_skill_ids[:8],
+        },
+        {
+            "title": f"Capstone: {goal} Interview Preparation",
+            "description": f"Prepare and practice for {goal} interviews with mock projects",
+            "expected_output": "Portfolio website with project demos and technical write-ups",
+            "requirements": ["Portfolio", "Technical writing", "Project demos"],
+            "skills_tested": all_skill_ids[:6],
+        },
+    ]
+
     return {
         "version": 1,
         "student_id": student_profile.get("student_id", "unknown"),
-        "goal": student_profile.get("target_role", ""),
+        "goal": goal,
+        "domain": student_profile.get("target_domain", "tech"),
+        "target_role": goal,
         "phases": final_phases,
+        "weeks": weeks,
+        "capstone_projects": capstone_projects,
         "total_hours": total_hours,
         "total_weeks": total_weeks,
+        "weekly_hours": student_profile.get("weekly_hours", 10),
         "total_topics": len(final_topic_ids),
         "confidence_score": confidence,
         "interview_ready_by_week": total_weeks if student_profile.get("has_interview") else 0,
@@ -367,10 +424,10 @@ def _produce_final_roadmap(
             "debate_rounds": 2 if has_second_round else 1,
             "has_observer": True,
             "pipeline": (
-                "domain_expert → prereq_architect → feasibility → student_advocate → "
-                "[R2: domain_expert, feasibility respond] → conflict_matcher → council_manager → observer"
+                "domain_expert -> prereq_architect -> feasibility -> student_advocate -> "
+                "[R2: domain_expert, feasibility respond] -> conflict_matcher -> council_manager -> observer"
                 if has_second_round else
-                "domain_expert → prereq_architect → feasibility → student_advocate → conflict_matcher → council_manager → observer"
+                "domain_expert -> prereq_architect -> feasibility -> student_advocate -> conflict_matcher -> council_manager -> observer"
             ),
         },
     }
