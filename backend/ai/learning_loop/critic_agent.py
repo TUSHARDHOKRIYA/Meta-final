@@ -52,14 +52,25 @@ _CREDIBLE_SIGNALS = [
     "accredited", "peer reviewed", "students enrolled",
 ]
 _HARD_REJECT_URL = [
+    # Q&A / forums
     "stackoverflow.com", "reddit.com", "quora.com",
     "medium.com", "stackoverflow", "forum", "discussion",
-    "zhihu.com", "support.google.com", "answers.microsoft.com",
+    "zhihu.com", "zhidao.baidu.com", "baidu.com",
+    "support.google.com", "answers.microsoft.com",
     "superuser.com", "serverfault.com", "askubuntu.com",
+    "hinative.com", "namu.wiki",
+    # Social media
     "news.ycombinator.com", "twitter.com", "x.com",
     "facebook.com", "linkedin.com", "pinterest.com",
-    "amazon.com", "ebay.com", "walmart.com",
+    "instagram.com", "tiktok.com",
+    # E-commerce
+    "amazon.com", "ebay.com", "walmart.com", "flipkart.com",
+    # Reference (not courses)
     "wikipedia.org",
+    # Photo/gallery sites (not courses)
+    "photo.net", "flickr.com", "500px.com", "unsplash.com",
+    # Telecom/unrelated community forums
+    "publicmobile.ca", "community.t-mobile.com",
 ]
 _SOFT_PENALTY_CONTENT = [
     "sponsored", "affiliate", "buy this book", "click here to purchase",
@@ -195,6 +206,22 @@ def score_url(url: str, title: str, snippet: str, page_text: Optional[str]) -> D
                 "reject_reason": f"Hard reject: matched '{pattern}' in URL/title",
             }
 
+    # ── Non-English content check ──
+    # Reject URLs with predominantly non-ASCII titles (Chinese/Japanese/Korean etc.)
+    non_ascii_count = sum(1 for ch in title if ord(ch) > 127)
+    if non_ascii_count > len(title) * 0.3 and len(title) > 5:
+        return {
+            "url": url,
+            "title": title,
+            "platform": domain,
+            "score": 0.0,
+            "passed": False,
+            "score_breakdown": {
+                "is_course": 0, "is_free": 0, "is_structured": 0,
+                "is_credible": 0, "freshness": 0, "penalties": 9,
+            },
+            "reject_reason": "Hard reject: non-English title",
+        }
     # ── Domain reputation shortcut ──
     # When page_text is None (fetch failed/timeout), use domain reputation
     # instead of penalising the URL unfairly.

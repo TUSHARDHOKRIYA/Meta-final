@@ -31,7 +31,8 @@ logger = logging.getLogger(__name__)
 
 def select(scored_candidates: List[Dict],
            student_profile: Optional[Dict] = None,
-           top_n: int = 3) -> List[Dict]:
+           top_n: int = 3,
+           topic_name: str = "") -> List[Dict]:
     """Select the top N courses from the Critic's scored list, matched
     to the student's profile.
 
@@ -120,55 +121,59 @@ def select(scored_candidates: List[Dict],
 
     # Guarantee at least 1 result — use direct course platform links
     if not results:
-        # Try to extract the topic from candidate titles
-        topic_hint = ""
-        for c in scored_candidates[:3]:
-            t = c.get("title", "")
-            if t and t != "Search for courses":
-                topic_hint = t.split(" - ")[0].split(" | ")[0][:40]
-                break
-        topic_q = topic_hint.replace(" ", "+") if topic_hint else "programming"
+        # Use provided topic_name, or try to extract from candidate titles
+        topic_hint = topic_name
+        if not topic_hint:
+            for c in scored_candidates[:3]:
+                t = c.get("title", "")
+                if t and t != "Search for courses":
+                    # Filter out non-English titles
+                    non_ascii = sum(1 for ch in t if ord(ch) > 127)
+                    if non_ascii < len(t) * 0.3:
+                        topic_hint = t.split(" - ")[0].split(" | ")[0][:40]
+                        break
+        topic_q = topic_hint.replace(" ", "+") if topic_hint else "online+courses"
 
         results = [
             {
                 "rank": 1,
-                "title": f"{topic_hint or 'Programming'} - freeCodeCamp",
-                "url": f"https://www.freecodecamp.org/news/search/?query={topic_q}",
-                "platform": "freecodecamp.org",
+                "title": f"Learn {topic_hint or 'Online'} - YouTube",
+                "url": f"https://www.youtube.com/results?search_query={topic_q}+full+course",
+                "platform": "youtube.com",
                 "quality_score": 0.55,
-                "why_selected": "Top free learning platform with hands-on exercises.",
+                "why_selected": "Free full-length video courses and tutorials.",
                 "is_free": True,
                 "estimated_hours": None,
-                "description": f"Search freeCodeCamp for free {topic_hint or 'programming'} courses and tutorials",
-                "source": "freeCodeCamp",
-                "resource_type": "course",
-                "duration_estimate": "~2 hours",
+                "description": f"Free {topic_hint or 'online'} video courses and tutorials",
+                "source": "YouTube",
+                "resource_type": "video",
+                "duration_estimate": "Varies",
             },
             {
                 "rank": 2,
-                "title": f"Learn {topic_hint or 'Programming'} - Coursera",
+                "title": f"Learn {topic_hint or 'Online'} - Coursera",
                 "url": f"https://www.coursera.org/search?query={topic_q}",
                 "platform": "coursera.org",
                 "quality_score": 0.5,
                 "why_selected": "University-backed courses, free to audit.",
                 "is_free": True,
                 "estimated_hours": None,
-                "description": f"Top-rated {topic_hint or 'programming'} courses from universities worldwide",
+                "description": f"Top-rated {topic_hint or 'online'} courses from universities",
                 "source": "Coursera",
                 "resource_type": "course",
                 "duration_estimate": "~4 hours",
             },
             {
                 "rank": 3,
-                "title": f"{topic_hint or 'Programming'} - Khan Academy",
-                "url": f"https://www.khanacademy.org/search?search_again=1&page_search_query={topic_q}",
-                "platform": "khanacademy.org",
+                "title": f"{topic_hint or 'Online'} Courses - Udemy",
+                "url": f"https://www.udemy.com/courses/search/?q={topic_q}&price=price-free",
+                "platform": "udemy.com",
                 "quality_score": 0.5,
-                "why_selected": "Free, interactive learning with practice exercises.",
+                "why_selected": "Free community-rated courses and tutorials.",
                 "is_free": True,
                 "estimated_hours": None,
-                "description": f"Free {topic_hint or 'programming'} lessons with interactive exercises",
-                "source": "Khan Academy",
+                "description": f"Free {topic_hint or 'online'} courses by expert instructors",
+                "source": "Udemy",
                 "resource_type": "course",
                 "duration_estimate": "~2 hours",
             },
