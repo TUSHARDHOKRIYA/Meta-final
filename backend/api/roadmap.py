@@ -39,7 +39,16 @@ async def generate_student_roadmap(data: RoadmapRequest):
 
     # Check for cached roadmap (local first, then Supabase)
     roadmap_file = os.path.join(DATA_DIR, f"roadmap_{data.student_id}.json")
-    if not data.force_regenerate:
+    if data.force_regenerate:
+        # Delete stale cached roadmaps so we generate a fresh one
+        if os.path.exists(roadmap_file):
+            os.remove(roadmap_file)
+        try:
+            from db.supabase_client import delete_current_roadmap
+            delete_current_roadmap(data.student_id)
+        except Exception:
+            pass
+    else:
         # Try local cache
         if os.path.exists(roadmap_file):
             with open(roadmap_file, "r") as f:

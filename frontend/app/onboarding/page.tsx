@@ -113,13 +113,12 @@ function OnboardingContent() {
       localStorage.setItem("edupath_student_id", result.student_id);
       localStorage.setItem("edupath_student_name", name);
 
-      if (isEditMode) {
-        // Force regenerate roadmap after edit
-        try {
-          await apiPost("/api/roadmap/generate", { student_id: result.student_id, force_regenerate: true });
-        } catch {
-          // Roadmap generation is secondary, don't block
-        }
+      // Always delete old cached roadmap and force-regenerate a fresh one
+      // so the roadmap matches the student's latest profile/goals
+      try {
+        await apiPost("/api/roadmap/generate", { student_id: result.student_id, force_regenerate: true });
+      } catch {
+        // Roadmap generation is secondary, don't block navigation
       }
       router.push("/dashboard");
     } catch (err: any) {
