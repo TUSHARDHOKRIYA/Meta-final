@@ -6,11 +6,9 @@ import sys, os, json, time
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 sys.path.insert(0, "backend")
 
-os.environ.setdefault("API_BASE_URL", "https://api.groq.com/openai/v1")
-os.environ.setdefault("MODEL_NAME", "llama-3.3-70b-versatile")
+os.environ.setdefault("API_BASE_URL", "https://api-inference.huggingface.co/v1")
+os.environ.setdefault("MODEL_NAME", "degree-checker-01/edupath-grpo-tutor")
 
-if not os.environ.get("GROQ_API_KEY"):
-    print("WARNING: GROQ_API_KEY environment variable is not set. Some tests will use fallback generation.")
 
 PASS = 0
 FAIL = 0

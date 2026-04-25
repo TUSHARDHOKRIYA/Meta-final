@@ -144,22 +144,37 @@ Choose the BEST next action. Respond with ONLY a JSON object:
 #  GRPO Reward Function
 # ═══════════════════════════════════════════════════════════
 
-def reward_function(completions: List[str], prompts: List[str] = None) -> List[float]:
+def reward_function(completions, **kwargs) -> List[float]:
     """
     GRPO reward function — scores each LLM completion using the
     EduPath environment as a verifier.
 
     Args:
-        completions: List of LLM-generated action strings.
-        prompts: Optional list of prompts (for context).
+        completions: List of LLM-generated action strings/dicts.
+        **kwargs: Extra args from TRL (prompts, completion_ids, etc.)
 
     Returns:
         List of reward values.
     """
     rewards = []
     for i, completion in enumerate(completions):
+        # Handle various completion formats from TRL
+        if isinstance(completion, list):
+            text = ''
+            for msg in completion:
+                if isinstance(msg, dict) and msg.get('role') == 'assistant':
+                    text = msg.get('content', '')
+                    break
+            if not text and completion:
+                last = completion[-1]
+                text = last.get('content', '') if isinstance(last, dict) else str(last)
+        elif isinstance(completion, dict):
+            text = completion.get('content', str(completion))
+        else:
+            text = str(completion)
+
         # Extract JSON from the completion
-        action_text = _extract_json(completion)
+        action_text = _extract_json(text)
         reward = get_env_reward(action_text, {})
 
         # Bonus for valid JSON format
@@ -285,18 +300,13 @@ def train_grpo(
         report_to="none",
     )
 
-    # Custom reward wrapper for GRPO
-    def grpo_reward_fn(completions, **kwargs):
-        """Wrapper that scores completions using EduPath environment."""
-        return reward_function(completions)
-
     # Train
     trainer = GRPOTrainer(
         model=model,
         args=training_args,
         train_dataset=dataset,
         processing_class=tokenizer,
-        reward_funcs=grpo_reward_fn,
+        reward_funcs=[reward_function],
     )
 
     print(f"\nStarting GRPO training for {num_steps} steps...")

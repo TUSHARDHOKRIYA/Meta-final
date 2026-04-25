@@ -4,10 +4,17 @@ Team KRIYA | Meta Hackathon 2026
 
 Thin abstraction over the OpenAI-compatible API. All LLM calls across
 the platform route through generate_json() or generate_text().
-Reads API_BASE_URL, MODEL_NAME, and HF_TOKEN from environment variables.
+
+Supports three backends (auto-detected from env vars):
+  1. HuggingFace Inference API (default) — uses our GRPO fine-tuned model
+  2. Groq API — if GROQ_API_KEY is set
+  3. OpenAI API — if OPENAI_API_KEY is set
+
+No external API key is required for the default HF backend.
 """
 import os
 import json
+import re
 import logging
 
 logger = logging.getLogger(__name__)
@@ -15,16 +22,24 @@ logger = logging.getLogger(__name__)
 
 def _get_config():
     """Get LLM configuration from environment variables."""
-    api_base_url = os.getenv("API_BASE_URL")
-    model_name = os.getenv("MODEL_NAME", "gpt-4o-mini")
+    # Default to HuggingFace Inference API with our GRPO fine-tuned model
+    api_base_url = os.getenv(
+        "API_BASE_URL",
+        "https://api-inference.huggingface.co/v1"
+    )
+    model_name = os.getenv(
+        "MODEL_NAME",
+        "degree-checker-01/edupath-grpo-tutor"
+    )
     hf_token = os.getenv("HF_TOKEN", "")
 
-    if not api_base_url:
-        raise ValueError(
-            "API_BASE_URL environment variable not set. "
-            "Set it to your LLM endpoint (e.g. https://api.openai.com/v1)"
-        )
     return api_base_url, model_name, hf_token
+
+
+def _is_hf_backend():
+    """Check if we're using HuggingFace Inference API."""
+    url = os.getenv("API_BASE_URL", "https://api-inference.huggingface.co/v1")
+    return "huggingface" in url
 
 
 def _get_client():
@@ -48,26 +63,85 @@ def _get_client():
     return client, model_name
 
 
+def _extract_json_from_text(text: str) -> dict:
+    """Extract JSON from LLM response that may contain extra text or markdown."""
+    if not text or not text.strip():
+        return {}
+
+    # Try direct parse first
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+
+    # Try extracting from markdown code blocks
+    md_match = re.search(r'```(?:json)?\s*\n?(.*?)\n?\s*```', text, re.DOTALL)
+    if md_match:
+        try:
+            return json.loads(md_match.group(1).strip())
+        except json.JSONDecodeError:
+            pass
+
+    # Try extracting first JSON object
+    brace_match = re.search(r'\{.*\}', text, re.DOTALL)
+    if brace_match:
+        raw = brace_match.group()
+        try:
+            return json.loads(raw)
+        except json.JSONDecodeError:
+            # Fix common issues: trailing commas
+            fixed = re.sub(r',\s*}', '}', re.sub(r',\s*]', ']', raw))
+            try:
+                return json.loads(fixed)
+            except json.JSONDecodeError:
+                pass
+
+    return {}
+
+
 def generate_json(system_prompt: str, user_prompt: str) -> dict:
-    """Generate structured JSON output from LLM using OpenAI client."""
+    """Generate structured JSON output from LLM using OpenAI client.
+
+    Handles both providers that support response_format (OpenAI, Groq)
+    and those that don't (HuggingFace Inference API) by extracting
+    JSON from the raw response text when needed.
+    """
     client, model_name = _get_client()
 
+    # Ensure system prompt asks for JSON output
+    json_instruction = "\n\nIMPORTANT: Respond ONLY with valid JSON. No extra text."
+    enhanced_system = system_prompt
+    if "json" not in system_prompt.lower():
+        enhanced_system = system_prompt + json_instruction
+
     try:
-        response = client.chat.completions.create(
+        # Build kwargs — only add response_format for providers that support it
+        kwargs = dict(
             model=model_name,
             messages=[
-                {"role": "system", "content": system_prompt},
+                {"role": "system", "content": enhanced_system},
                 {"role": "user", "content": user_prompt},
             ],
             temperature=0.3,
             top_p=0.9,
-            response_format={"type": "json_object"},
         )
+
+        # HF Inference API doesn't reliably support response_format
+        if not _is_hf_backend():
+            kwargs["response_format"] = {"type": "json_object"}
+
+        response = client.chat.completions.create(**kwargs)
         raw = response.choices[0].message.content
         if not raw or raw.strip() == "":
             logger.error("LLM returned empty response")
             return {}
-        return json.loads(raw)
+
+        # Parse JSON — with robust extraction for non-JSON-mode providers
+        result = _extract_json_from_text(raw)
+        if not result:
+            logger.error(f"Could not extract JSON from LLM response: {raw[:200]}")
+        return result
+
     except json.JSONDecodeError as e:
         logger.error(f"LLM returned invalid JSON: {e}")
         return {}
@@ -152,5 +226,18 @@ def generate_json_with_retry(system_prompt: str, user_prompt: str,
 
 
 def is_api_key_set() -> bool:
-    """Check if the required LLM environment variables are configured."""
-    return bool(os.getenv("API_BASE_URL"))
+    """Check if an LLM backend is available.
+
+    Returns True if ANY of the following is configured:
+    - API_BASE_URL is set (custom endpoint)
+    - HF_TOKEN is set (HuggingFace Inference API)
+    - GROQ_API_KEY is set (Groq)
+    - LLM_API_KEY is set (generic)
+    - OPENAI_API_KEY is set (OpenAI)
+
+    Also returns True by default since the HF Inference API
+    works without authentication for public models.
+    """
+    # Our GRPO model is public on HuggingFace — always available
+    # Even without HF_TOKEN, public models can be queried (with rate limits)
+    return True

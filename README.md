@@ -1,284 +1,308 @@
----
-title: EduPath AI
-emoji: 🎓
-colorFrom: gray
-colorTo: pink
-sdk: docker
-pinned: false
-tags:
-  - openenv
-  - custom-environment
-  - education
-  - reinforcement-learning
-  - ppo
----
-
 # 🎓 EduPath AI — Personalized Learning Tutor Environment
 
-> OpenEnv-compliant reinforcement learning environment for training AI agents to be effective personalized tutors.
+> **Team KRIYA** | OpenEnv Hackathon India 2026  
+> An OpenEnv-compliant RL environment for training LLMs to become adaptive, multi-agent AI tutors
 
-## 🎯 Motivation
+[![HuggingFace Space](https://img.shields.io/badge/🤗%20HuggingFace-Space-blue)](https://huggingface.co/spaces/degree-checker-01/meta-new-space)
+[![GRPO Model](https://img.shields.io/badge/🤗%20Model-edupath--grpo--tutor-green)](https://huggingface.co/degree-checker-01/edupath-grpo-tutor)
+[![Live Demo](https://img.shields.io/badge/🔗%20Live-Comparison%20Demo-orange)](https://degree-checker-01-meta-new-space.hf.space/comparison)
 
-**Why this environment matters for RL/agent research:**
+---
 
-Personalized tutoring is a high-impact, real-world problem. Human tutors adapt curricula based on student performance — recommending topics in prerequisite order, adjusting difficulty after quiz failures, and assigning projects to reinforce learning. This is exactly the type of sequential decision-making problem where RL agents can excel.
+## 📌 Links
 
-EduPath AI provides a **realistic simulation** of this tutoring process across **5 professional domains** (tech, healthcare, business, law, design). Unlike toy environments, the agent must:
-- Navigate a **prerequisite dependency graph** (32+ topics across domains)
-- Respond to **stochastic quiz outcomes** that depend on student skill levels
-- Balance **exploration** (new topics) with **reinforcement** (quizzes, projects)
-- Handle **cross-domain transitions** (e.g., a doctor learning AI for healthcare)
+| Resource | URL |
+|---|---|
+| **🌐 HuggingFace Space (Environment)** | [degree-checker-01/meta-new-space](https://huggingface.co/spaces/degree-checker-01/meta-new-space) |
+| **🤖 GRPO Fine-Tuned Model** | [degree-checker-01/edupath-grpo-tutor](https://huggingface.co/degree-checker-01/edupath-grpo-tutor) |
+| **📊 Live Comparison Demo** | [Baseline vs GRPO](https://degree-checker-01-meta-new-space.hf.space/comparison) |
+| **📝 Blog Post** | <!-- TODO: Add HuggingFace blog link --> |
+| **🎥 Video (< 2 min)** | <!-- TODO: Add YouTube link --> |
+| **📓 Training Notebook** | <!-- TODO: Add Kaggle notebook link --> |
 
-This fills a gap in the OpenEnv ecosystem — there are no existing environments modeling **adaptive education**, a domain where AI agents could have immediate, real-world impact.
+---
 
-## 🏆 Agent Comparison — Key Results
+## 🧠 Problem: Why Can't LLMs Teach?
 
-We evaluated six agent architectures across five tasks of increasing difficulty:
+Current LLMs can answer questions, but they **can't tutor**. Real tutoring requires:
 
-| Agent | Task 1 (Easy) | Task 2 (Medium) | Task 3 (Hard) | Task 4 (Team) | Task 5 (Deadline) | **Average** |
-|-------|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Rule-based** | 0.999 | 0.977 | 0.382 | 0.960 | 0.359 | 0.735 |
-| **LLM ReAct** | 0.999 | 0.972 | 0.805 | 0.960 | 0.821 | **0.912** |
-| **PPO MLP** | 0.001 | 0.001 | 0.001 | 0.223 | 0.107 | 0.067 |
-| **PPO GNN** | 0.001 | 0.001 | 0.001 | 0.960 | 0.359 | 0.264 |
-| **HRL Strategy** | 0.001 | 0.001 | 0.382 | 0.960 | 0.359 | 0.341 |
-| **Reflexion** | 0.999 | 0.977 | 0.382 | 0.960 | 0.359 | 0.735 |
+- **Knowing what to teach next** — not just answering, but proactively choosing the right topic based on what a student already knows
+- **Remembering student state** across a multi-week learning journey (long-horizon planning)
+- **Adapting in real-time** — if a student fails a quiz, the tutor must adjust the roadmap, not blindly continue
+- **Multi-agent coordination** — different cognitive tasks (profiling, curriculum design, assessment, adaptation) require different reasoning strategies
 
-> The **LLM ReAct agent** achieves the highest average score (0.912) by using scratchpad-based reasoning to explore the curriculum graph. It outperforms the rule-based baseline particularly on harder cross-domain tasks (Task 3: 0.805 vs 0.382, Task 5: 0.821 vs 0.359).
+**EduPath AI** is an OpenEnv-compliant RL environment that trains LLMs to handle all four of these challenges simultaneously through a **multi-task GRPO fine-tuning pipeline**.
 
-### Why the ReAct Agent Wins
+---
 
-1. **ReAct Agent** uses working memory (scratchpad) to track topic attempts, quiz failures, and current strategy — it employs a bridge strategy that prioritizes topics with completed prerequisites and lower difficulty.
-
-2. **Reflexion Agent** iterates over 3 episodes and keeps the best, using verbal reflection to improve its policy after each episode.
-
-3. **Student Difficulty Model** (BKT) makes quiz scores depend on teaching quality — good prerequisite ordering → higher quiz scores → more reward. This creates a learnable signal for any RL agent.
-
-## 🔥 Key Features
-
-- **Any Field**: Not just tech — works for doctors, lawyers, designers, business professionals
-- **Prerequisite Graph**: 32+ topics with dependency ordering across 5 domains
-- **Adaptive Quizzes**: Quiz scores depend on skill level, prerequisite completion, and topic difficulty
-- **Project Milestones**: Mini-projects and capstone projects award higher rewards
-- **Job Readiness Tracking**: Terminal reward when student reaches 80%+ readiness
-- **Partial Progress Signals**: 7 distinct reward values, not just binary success/failure
-- **Dynamic Replanning**: Agent triggers roadmap revision when student fails repeatedly
-- **ReAct Working Memory**: Agent maintains scratchpad of attempts, failures, and strategies
-- **PPO Training**: Full Gymnasium wrapper for training RL policies
-
-## 📐 Action Space
-
-The agent selects one of 7 action types per step:
-
-| Action | Type | Parameters | Reward Range | Description |
-|--------|------|------------|-------------|-------------|
-| `recommend_topic` | `string` | `topic_id: str` | +0.3 (good) / -0.2 (prereq fail) / -0.1 (redundant) | Recommend a new topic to the student |
-| `assign_quiz` | `string` | `topic_id: str` | +0.2 (pass) / +0.1 (partial) / 0.0 (fail) | Assign a quiz on a topic |
-| `assign_mini_project` | `string` | `topic_id: str` | +0.4 (success) / -0.1 (not found) | Assign a hands-on mini project |
-| `assign_capstone` | `string` | `topic_id: str` | +0.5 (success) / -0.1 (not found) | Assign a capstone project |
-| `recommend_resource` | `string` | `topic_id: str` | +0.1 (found) / 0.0 (none) | Recommend learning resources |
-| `suggest_event` | `string` | — | +0.1 | Suggest hackathons or events |
-| `mark_job_ready` | `string` | — | +1.0 (terminal, if ≥80%) / -0.2 (premature) | Declare student job-ready |
-
-**Additional penalties:**
-- **Loop detection**: -0.1 if the same (action_type, topic_id) is repeated 3+ times consecutively
-- **Episode limit**: 100 steps maximum
-
-## 👁️ Observation Space
-
-Each observation is a Pydantic model (`StudentObservation`) with these fields:
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `student_id` | `str` | Unique student identifier |
-| `target_field` | `str` | Learning domain: "tech", "healthcare", "business", "law", "design" |
-| `learning_goal` | `str` | Free-text goal (e.g., "Become a Data Analyst") |
-| `completed_topics` | `List[str]` | Topic IDs the student has completed |
-| `available_topics` | `List[str]` | Topic IDs whose prerequisites are all met |
-| `current_topic` | `Optional[str]` | Topic currently being studied |
-| `quiz_history_summary` | `Dict[str, float]` | Map of topic_id → last quiz score (0-100) |
-| `skill_levels` | `Dict[str, float]` | Map of skill → proficiency (0.0-1.0) |
-| `completed_projects` | `List[str]` | Project IDs completed |
-| `job_readiness_score` | `float` | Overall readiness score (0.0-1.0) |
-| `badges_earned` | `int` | Number of achievement badges earned |
-| `total_steps` | `int` | Steps taken so far in this episode |
-| `weekly_hours` | `int` | Student's available study hours per week |
-
-### Evaluation Benchmarks (5 Tasks × 6 Agents)
-
-EduPath AI includes a comprehensive ablation study comparing 6 different tutoring approaches.
-
-| Agent | Type | Task 1 (Easy) | Task 2 (Med) | Task 3 (Hard) | Task 4 (Team) | Task 5 (Career) | Average |
-|---|---|---|---|---|---|---|---|
-| `rule_based` | Heuristic | ~0.50 | ~0.45 | ~0.30 | ~0.20 | ~0.10 | **0.31** |
-| `react` | LLM + Memory | ~1.00 | ~0.75 | ~0.60 | ~0.55 | ~0.40 | **0.66** |
-| `ppo_mlp` | RL (Flat) | ~0.90 | ~0.80 | ~0.40 | ~0.35 | ~0.20 | **0.53** |
-| `ppo_gnn` | RL (Graph) | ~0.95 | ~0.85 | ~0.70 | ~0.60 | ~0.45 | **0.71** |
-| `hrl` | RL (Hierarchical)| ~0.98 | ~0.90 | ~0.80 | ~0.75 | ~0.60 | **0.80** |
-| `reflexion` | LLM + Verbal | ~1.00 | ~0.95 | ~0.85 | ~0.80 | ~0.65 | **0.85** |
-
-> Scores obtained over 10 eval episodes. Reproducible via `python evaluate.py` or the comprehensive `python ablation.py`.
-
-### Task Details (Tasks 1-5)
-
-**Task 1 (Easy):** Learn Python basics (sequence 5 topics).
-**Task 2 (Medium):** Data Analyst transition (adapt to failed quizzes).
-**Task 3 (Hard):** Doctor learning AI (cross-domain bridging).
-**Task 4 (Team Learning):** Manage a team of 3 distinct students needing shared skills but at different paces.
-**Task 5 (Deadline-Driven Career):** Help a student transition to AI Engineer within a strict 6-month deadline with project portfolio constraints.
-
-## 🧠 Advanced Agent Implementations (Upgrades 1-8)
-
-### Bayesian Knowledge Tracing (BKT) Student Model
-The entire environment difficulty simulates real distinct student characteristics. We replaced standard heuristic grading with a rigorous **BKT model** (`bkt_model.py`) that uses Bayes' Theorem to track learning state:
-```math
-P(L_t) = P(L_{t-1}) + (1 - P(L_{t-1})) \times P(T)
-```
-
-### Graph Neural Network (GNN) Policy 
-Features a complete PyTorch Geometric `GnnTutoringPolicy` that processes the curriculum Prerequisite Graph directly using `GATConv` layers. The agent natively attends to the topological dependencies of skills.
-
-### Hierarchical RL (HRL)
-Splits the agent into a **Manager** (sets broad strategy: e.g., "Prerequisite Fill", "Capstone Push") and a **Worker** (picks specific topics). Uses specialized strategy alignment reward shaping.
-
-### Reflexion Agent & ICM
-- **Reflexion**: Agent creates a verbal working memory scratchpad. If a trajectory fails or yields a low score, the agent reflects on its mistakes and improves in the next episode.
-- **ICM (Intrinsic Curiosity Module)**: Implements count-based novelty bonuses in PPO to explore deep technical tracks that require many prerequisites.
-
-## 🏗️ Architecture
+## 🏗️ Environment Architecture
 
 ```
-EduPath-AI/
-├── backend/                  # FastAPI Python backend
-│   ├── main.py              # App entry + /reset, /step, /state endpoints
-│   ├── environment/         # OpenEnv RL environment
-│   │   ├── env.py          # EduPathEnv: step(), reset(), state()
-│   │   ├── models.py       # Pydantic: Observation, Action, Reward, StepResult
-│   │   ├── curriculum.py   # Multi-field topic graph (32+ topics)
-│   │   ├── student.py      # Student state management
-│   │   ├── student_model.py # Student difficulty model (Upgrade 2)
-│   │   └── graders.py      # Task 1/2/3 graders (0.0-1.0)
-│   ├── ai/                  # AI modules (OpenAI Client)
-│   │   ├── llm_client.py   # OpenAI-compatible client
-│   │   ├── roadmap_generator.py # + dynamic replanning (Upgrade 4)
-│   │   └── quiz_generator.py
-│   └── api/                 # REST API endpoints
-├── inference.py             # ReAct / Rule / PPO agent (Upgrade 1)
-├── gym_wrapper.py           # Gymnasium wrapper (Upgrade 3)
-├── train.py                 # PPO training script (Upgrade 3)
-├── evaluate.py              # 3-agent comparison (Upgrade 3)
-├── models/                  # Trained PPO models
-├── results/                 # Evaluation results & learning curves
-├── tasks/                   # OpenEnv task definitions
-├── openenv.yaml             # OpenEnv metadata
-├── Dockerfile               # Container definition
-└── .env.example             # Environment template
+┌──────────────────────────────────────────────────────────────────┐
+│                    EduPath AI Environment                        │
+│                                                                  │
+│  ┌─────────────┐    ┌──────────────────┐    ┌────────────────┐  │
+│  │  Student     │    │  Curriculum DAG   │    │  BKT Student   │  │
+│  │  Manager     │◄──►│  36 Topics × 5    │◄──►│  Model         │  │
+│  │  (JSON/DB)   │    │  Fields           │    │  (Bayesian)    │  │
+│  └──────┬───────┘    └────────┬─────────┘    └───────┬────────┘  │
+│         │                     │                       │          │
+│         ▼                     ▼                       ▼          │
+│  ┌──────────────────────────────────────────────────────────┐    │
+│  │              OpenEnv API: /reset  /step  /state          │    │
+│  └──────────────────────────┬───────────────────────────────┘    │
+│                             │                                    │
+│                             ▼                                    │
+│  ┌──────────────────────────────────────────────────────────┐    │
+│  │                  15-Agent System                          │    │
+│  │                                                           │    │
+│  │  Stage 1: Profiling Agent (conversational onboarding)     │    │
+│  │  Stage 2: Roadmap Council (6 agents debate curriculum)    │    │
+│  │  Stage 3: Learning Loop (scout → quiz → critic)           │    │
+│  │  Stage 4: Adaptation Agent (dynamic course correction)    │    │
+│  └──────────────────────────────────────────────────────────┘    │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
-## 🚀 Quick Start
+### What the Agent Sees (Observation)
 
-### 1. Install Dependencies
-```bash
-cd backend
-pip install -r requirements.txt
+```json
+{
+  "completed_topics": ["python_basics", "python_control_flow"],
+  "available_topics": ["python_oop", "data_structures", "version_control"],
+  "current_topic": "python_control_flow",
+  "job_readiness_score": 0.15,
+  "quiz_history": [{"topic": "python_basics", "score": 85, "passed": true}],
+  "badges_earned": ["first_step", "first_quiz"],
+  "step_count": 12
+}
 ```
 
-### 2. Set Environment Variables
-```bash
-export API_BASE_URL=https://api.openai.com/v1   # LLM endpoint
-export MODEL_NAME=gpt-4o-mini                   # Model name
-export HF_TOKEN=your_token_here                 # HuggingFace/API key
-```
+### What the Agent Does (7 Actions)
 
-### 3. Start the Server
-```bash
-cd backend
-uvicorn main:app --host 0.0.0.0 --port 7860
-```
+| Action | When to Use |
+|---|---|
+| `recommend_topic` | Student needs new material → pick from available topics |
+| `assign_quiz` | Student is studying a topic → test understanding |
+| `assign_mini_project` | 2+ topics completed → hands-on practice |
+| `assign_capstone` | 5+ topics + readiness ≥ 0.4 → final project |
+| `recommend_resource` | Supplement current study with courses/articles |
+| `suggest_event` | Relevant hackathons or events |
+| `mark_job_ready` | Readiness ≥ 0.8 → student is career-ready |
 
-### 4. Run Inference (3 Agent Modes)
-```bash
-# ReAct agent with working memory (default)
-python inference.py --all --mode react
+### How the Agent Gets Rewarded
 
-# Rule-based deterministic agent
-python inference.py --all --mode rule
+The reward function is **multi-dimensional and state-aware** — not a simple 0/1 signal:
 
-# PPO trained neural network agent
-python inference.py --all --mode ppo
+- **Prerequisite compliance**: Topics must follow the DAG order (+0.2 for correct order)
+- **Context sensitivity**: `assign_quiz` rewarded when student has a current topic, penalized otherwise
+- **Anti-mode-collapse**: Frequency penalty if agent repeats the same action >50% of the time
+- **Real resource matching**: Bonus for recommending URLs that exist in our curated resource database
+- **JSON structural scoring**: Graduated rewards for well-formed outputs (not binary parse/fail)
 
-# Run a specific task
-python inference.py --task task1_easy --mode react
+---
 
-# Direct mode (no server needed)
-python inference.py --all --direct --mode rule
-```
+## 🏋️ Training: Multi-Task GRPO
 
-### 5. Train PPO Agent
-```bash
-# Train on all 3 tasks (takes ~20 minutes on CPU)
-python train.py --task all --timesteps 50000
+We train a single model on **4 tasks simultaneously** using Group Relative Policy Optimization (GRPO):
 
-# Train on specific task
-python train.py --task task2_medium --timesteps 50000
-```
+| Task | Weight | What it Trains |
+|---|---|---|
+| **Action Selection** | 40% | Choose the right pedagogical action given student state |
+| **Roadmap Generation** | 20% | Create prerequisite-ordered learning paths |
+| **Quiz Generation** | 20% | Generate topic-specific MCQ quizzes with explanations |
+| **Resource Recommendation** | 20% | Recommend real, curated learning resources |
 
-### 6. Evaluate & Compare Agents
-```bash
-# Compare all agents across all tasks (10 episodes each)
-python evaluate.py --episodes 10
-# Results saved to results/evaluation_results.json and results/episode_rewards.csv
-```
+### Training Configuration
 
-### 7. Verify OpenEnv Endpoints
-```bash
-# Reset
-curl -X POST http://localhost:7860/reset -H "Content-Type: application/json" -d '{}'
+| Parameter | 7B Model | 3B Model |
+|---|---|---|
+| Base Model | Qwen 2.5-7B-Instruct | Qwen 2.5-3B-Instruct |
+| Quantization | 4-bit (NF4) | 4-bit (NF4) |
+| LoRA Rank | 16 | 16 |
+| Training Steps | 600 | 600 |
+| Batch Size | 1 | 2 |
+| Gradient Accumulation | 8 | 4 |
+| Learning Rate | 3e-5 | 5e-5 |
+| Beta (KL penalty) | 0.08 | 0.1 |
+| Hardware | Kaggle T4 (16GB) | Kaggle T4 (16GB) |
+| Dataset | 500 train / 100 eval | 500 train / 100 eval |
 
-# Step
-curl -X POST http://localhost:7860/step -H "Content-Type: application/json" \
-  -d '{"type": "recommend_topic", "topic_id": "python_basics"}'
-
-# State
-curl -X POST http://localhost:7860/state -H "Content-Type: application/json" -d '{}'
-```
-
-## 🐳 Docker
+### Training Script
 
 ```bash
-docker build -t edupath-ai .
-docker run -p 7860:7860 \
-  -e API_BASE_URL=https://api.openai.com/v1 \
-  -e MODEL_NAME=gpt-4o-mini \
-  -e HF_TOKEN=your_token \
-  edupath-ai
+# Part 1: Setup + reward functions (shared)
+# Part 2: Dataset generation + model loading + GRPO training
+
+# Run on Kaggle with T4 GPU:
+# Cell 1-3: train_multitask_part1.py
+# Cell 4-11: train_multitask_part2.py (7B) or train_multitask_part2_3B.py (3B)
 ```
 
-## 🔌 Reward Function Design
+---
 
-The reward function provides **dense, informative signal** across the full trajectory:
+## 📊 Results
+
+### Training Curves
+
+<!-- TODO: Embed training plot after training completes -->
+<!-- ![Training Results](grpo_training_results.png) -->
+> **⏳ Training in progress on Kaggle — plots will be added upon completion**
+
+### Before vs After GRPO
+
+| Metric | Baseline (Untrained) | After GRPO | Improvement |
+|---|---|---|---|
+| Mean Reward | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
+| Positive Rate | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
+| Valid JSON Rate | 100% | <!-- TODO --> | — |
+
+### Per-Task Breakdown
+
+| Task | Before | After | Delta |
+|---|---|---|---|
+| Action Selection | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
+| Roadmap Generation | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
+| Quiz Generation | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
+| Resource Recommendation | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
+
+### Qualitative Examples
+
+<details>
+<summary>🎯 Action Selection — Before vs After</summary>
+
+**Prompt**: Student has completed `python_basics` and `python_control_flow`. Current topic: `python_control_flow`. Available: `[python_oop, data_structures, version_control]`.
+
+**Baseline Output:**
+```json
+// TODO: Add real baseline output
+```
+
+**GRPO Output:**
+```json
+// TODO: Add real GRPO output
+```
+</details>
+
+<details>
+<summary>🗺️ Roadmap Generation — Before vs After</summary>
+
+**Prompt**: Tech student, goal: ML Engineer
+
+**Baseline Output:**
+```json
+// TODO: Add real baseline output
+```
+
+**GRPO Output:**
+```json
+// TODO: Add real GRPO output
+```
+</details>
+
+---
+
+## 🔧 How to Run
+
+### 1. Run the Environment (HuggingFace Space)
+
+The environment is live at: **[degree-checker-01/meta-new-space](https://huggingface.co/spaces/degree-checker-01/meta-new-space)**
+
+```bash
+# Or run locally:
+git clone https://huggingface.co/spaces/degree-checker-01/meta-new-space
+cd meta-new-space
+pip install -r backend/requirements.txt
+python -m uvicorn backend.main:app --host 0.0.0.0 --port 7860
+```
+
+### 2. Interact with the Environment
+
+```python
+import requests
+
+# Reset environment
+resp = requests.post("http://localhost:7860/reset", json={
+    "student_profile": {
+        "name": "Alice",
+        "target_field": "tech",
+        "learning_goal": "ML Engineer",
+        "weekly_hours": 10
+    }
+})
+obs = resp.json()["observation"]
+
+# Take an action
+resp = requests.post("http://localhost:7860/step", json={
+    "type": "recommend_topic",
+    "topic_id": "python_basics"
+})
+result = resp.json()
+print(f"Reward: {result['reward']}, Done: {result['done']}")
+```
+
+### 3. Train with GRPO
+
+```bash
+# On Kaggle (T4 GPU required):
+# 1. Create a new notebook
+# 2. Paste cells from train_multitask_part1.py (setup + rewards)
+# 3. Paste cells from train_multitask_part2.py (7B) or train_multitask_part2_3B.py (3B)
+# 4. Run all cells — training takes ~2-3 hours on T4
+```
+
+---
+
+## 🎯 Hackathon Theme Alignment
+
+| Theme | How EduPath Addresses It |
+|---|---|
+| **Multi-Agent Interactions** | 15 agents: 6-agent council debate for roadmaps, 3-agent learning loop, profiling + adaptation agents |
+| **Long-Horizon Planning** | Learning journeys span weeks/months across 36 topics with prerequisite constraints |
+| **Personalized Tasks** | BKT-driven student model adapts difficulty, resources, and pacing to individual learners |
+| **Self-Improvement** | GRPO training loop: model generates → gets reward → improves. Trained on 4 tasks simultaneously |
+
+---
+
+## 📁 Repository Structure
 
 ```
-+1.0  ── mark_job_ready (terminal, student ≥80% ready)
-+0.5  ── assign_capstone (successfully assigned)
-+0.4  ── assign_mini_project (successfully assigned)
-+0.3  ── recommend_topic (prerequisites met)
-+0.2  ── assign_quiz (student passed, score ≥70%)
-+0.1  ── assign_quiz (partial, 50-69%) / recommend_resource / suggest_event
- 0.0  ── assign_quiz (failed, <50%) / no resources found
--0.1  ── redundant action / unknown topic / loop detected / no project found
--0.2  ── prerequisites not met / premature job_ready
+meta-hacka/
+├── backend/
+│   ├── ai/                     # 15 agent implementations
+│   │   ├── llm_client.py       # Unified LLM client (HF/Groq/OpenAI)
+│   │   ├── profiling_agent.py  # Conversational student profiling
+│   │   ├── roadmap_generator.py
+│   │   ├── quiz_generator.py
+│   │   ├── council/            # 6-agent roadmap council
+│   │   ├── learning_loop/      # Scout → Quiz → Critic loop
+│   │   └── adaptation/         # Adaptation + recap agents
+│   ├── environment/            # OpenEnv RL environment
+│   │   ├── env.py              # EduPathEnv (step/reset/state)
+│   │   ├── models.py           # Pydantic data models
+│   │   ├── curriculum.py       # Topic DAG + resource DB
+│   │   ├── bkt_model.py        # Bayesian Knowledge Tracing
+│   │   └── student.py          # Student state management
+│   └── main.py                 # FastAPI server
+├── dashboard/
+│   ├── index.html              # Training dashboard
+│   └── comparison.html         # Baseline vs GRPO demo
+├── train_multitask_part1.py    # GRPO setup + reward functions
+├── train_multitask_part2.py    # 7B training pipeline
+├── train_multitask_part2_3B.py # 3B training pipeline
+├── openenv.yaml                # OpenEnv manifest
+├── Dockerfile                  # HuggingFace Space deployment
+└── README.md                   # This file
 ```
 
-This creates a clear **curriculum**: recommend → quiz → (adapt if fail) → project → repeat → job_ready.
+---
 
-## 🛠️ Tech Stack
+## 👥 Team KRIYA
 
-- **Backend**: Python 3.11, FastAPI, Pydantic, Uvicorn
-- **AI**: OpenAI Client (API_BASE_URL configurable for any provider)
-- **RL Training**: stable-baselines3 (PPO), Gymnasium
-- **Student Model**: Realistic difficulty simulation with skill growth
-- **Storage**: In-memory + JSON file persistence (no external DB required)
-- **Deploy**: Docker-ready, HuggingFace Spaces compatible (port 7860)
-- **Spec**: OpenEnv compliant — `openenv.yaml`, typed models, `/reset`, `/step`, `/state`
-  URL Link:-https://edupathenv-ai.netlify.app/
+<!-- TODO: Add team member names and roles -->
+
+---
+
+## 📄 License
+
+MIT License — see [LICENSE](LICENSE) for details.

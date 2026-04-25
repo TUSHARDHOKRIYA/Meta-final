@@ -23,6 +23,7 @@ api.upload_folder(
         "git_*.txt",
         "uv_error.txt",
         "debug_*",
+        "*.ipynb",
     ],
 )
 print(f"Pushed to https://huggingface.co/spaces/{SPACE_ID}")

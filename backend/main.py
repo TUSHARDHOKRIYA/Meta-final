@@ -27,6 +27,7 @@ from api.profile import router as profile_router
 from api.chat import router as chat_router
 from api.learning import router as learning_router
 from api.analytics import router as analytics_router
+from api.demo import router as demo_router
 from environment.curriculum import TOPIC_GRAPH, PROJECT_DB
 from environment.env import EduPathEnv
 from environment.models import Action, ActionType, QuizDifficulty
@@ -65,6 +66,7 @@ app.include_router(profile_router)
 app.include_router(chat_router)
 app.include_router(learning_router)
 app.include_router(analytics_router)
+app.include_router(demo_router)
 
 
 # ═══ OpenEnv Session Management ═══
@@ -270,6 +272,15 @@ async def root():
             return f.read()
     return "<h1>Dashboard index.html not found</h1>"
 
+@app.get("/comparison", response_class=HTMLResponse)
+async def comparison_demo():
+    """Serve the GRPO comparison demo page."""
+    html_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "dashboard", "comparison.html")
+    if os.path.exists(html_path):
+        with open(html_path, "r", encoding="utf-8") as f:
+            return f.read()
+    return "<h1>Comparison page not found</h1>"
+
 @app.get("/api/metrics")
 async def get_metrics():
     """Get all available metrics from results directory."""
@@ -391,7 +402,7 @@ async def get_env_info():
             "assign_capstone", "recommend_resource", "suggest_event_or_hackathon",
             "mark_job_ready"
         ],
-        "api_key_configured": bool(os.getenv("API_BASE_URL")),
+        "api_key_configured": True,  # GRPO model is public on HuggingFace
     }
 
 

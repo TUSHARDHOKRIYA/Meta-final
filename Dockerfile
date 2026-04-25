@@ -21,6 +21,8 @@ COPY backend/ ./backend/
 COPY inference.py .
 COPY gym_wrapper.py .
 COPY train.py .
+COPY train_trl.py .
+COPY llm_training.py .
 COPY evaluate.py .
 COPY ablation.py .
 COPY hrl_train.py .
@@ -36,11 +38,11 @@ RUN mkdir -p ./models ./results ./backend/data/trajectory
 # Copy pre-trained models if they exist
 COPY models/ ./models/
 
-# Required env vars (set as HF Space Secrets at runtime)
-ENV API_BASE_URL="https://api.groq.com/openai/v1"
-ENV MODEL_NAME="llama-3.3-70b-versatile"
+# LLM config — defaults to our GRPO fine-tuned model on HuggingFace
+# No API key required for public models (set HF_TOKEN for higher rate limits)
+ENV API_BASE_URL="https://api-inference.huggingface.co/v1"
+ENV MODEL_NAME="degree-checker-01/edupath-grpo-tutor"
 ENV HF_TOKEN=""
-ENV GROQ_API_KEY=""
 ENV SUPABASE_URL=""
 ENV SUPABASE_KEY=""
 ENV PYTHONPATH="/app/backend"
