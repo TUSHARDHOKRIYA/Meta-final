@@ -30,6 +30,10 @@ DEMO_PROMPTS = {
     "resource": {
         "label": "Resource Recommendation",
         "prompt": '[RESOURCE] Recommend learning resources for: Machine Learning Fundamentals (id: machine_learning)\nStudent level: beginner\nKnown resources: [Stanford CS229 Machine Learning, Kaggle Intro to Machine Learning]\nRespond with JSON: {"resources": [{"title": "<name>", "url": "<url>", "type": "<course|article|video>", "reason": "<why>"}]}\nRecommend 3-5 high-quality, real resources.'
+    },
+    "onboarding": {
+        "label": "Student Profiling",
+        "prompt": '[ONBOARDING] You are a friendly AI tutor profiling a new student. Ask them exactly 3 questions to determine their learning goals, current skill level, and weekly availability.\nRespond ONLY with JSON: {"welcome_message": "<your conversational response>", "profiling_questions": ["<q1>", "<q2>", "<q3>"]}'
     }
 }
 
@@ -38,14 +42,16 @@ BASELINE_OUTPUTS = {
     "action": '{"type":"recommend_topic","topic_id":"unknown_topic_123"}',
     "roadmap": '{"roadmap":[{"topic_id":"intro","name":"Introduction","hours":5}]}',
     "quiz": '{"questions":[{"question":"What is Python?","options":["A","B","C","D"],"correct":0}]}',
-    "resource": '{"resources":[{"title":"Learn Python","url":"http://example.com","type":"article"}]}'
+    "resource": '{"resources":[{"title":"Learn Python","url":"http://example.com","type":"article"}]}',
+    "onboarding": '{"response": "Hello what do you want to learn? Do you know Python? How many hours?"}'
 }
 
 GRPO_OUTPUTS = {
     "action": '{"type":"assign_quiz","topic_id":"python_control_flow"}',
     "roadmap": '{"roadmap":[{"topic_id":"python_basics","name":"Python Fundamentals","reason":"Foundation for all ML work","estimated_hours":8},{"topic_id":"data_structures","name":"Data Structures & Algorithms","reason":"Required for efficient ML implementations","estimated_hours":12},{"topic_id":"statistics","name":"Statistics & Probability","reason":"Core math for ML models","estimated_hours":10},{"topic_id":"machine_learning","name":"Machine Learning Fundamentals","reason":"Primary goal area","estimated_hours":15},{"topic_id":"deep_learning","name":"Deep Learning & Neural Networks","reason":"Advanced ML techniques","estimated_hours":15}]}',
     "quiz": '{"questions":[{"question":"What is the correct way to define a function in Python?","options":["A. function my_func():","B. def my_func():","C. func my_func():","D. define my_func():"],"correct":1,"explanation":"Python uses the def keyword to define functions."},{"question":"Which data type is immutable in Python?","options":["A. list","B. dict","C. set","D. tuple"],"correct":3,"explanation":"Tuples are immutable sequences in Python."},{"question":"What does len([1,2,3]) return?","options":["A. 2","B. 3","C. 4","D. Error"],"correct":1,"explanation":"len() returns the number of elements in a sequence."},{"question":"How do you start a comment in Python?","options":["A. //","B. #","C. /*","D. --"],"correct":1,"explanation":"Python uses # for single-line comments."}]}',
-    "resource": '{"resources":[{"title":"Stanford CS229 Machine Learning","url":"https://cs229.stanford.edu/","type":"course","reason":"Gold-standard ML course by Andrew Ng"},{"title":"Kaggle Intro to Machine Learning","url":"https://www.kaggle.com/learn/intro-to-machine-learning","type":"course","reason":"Free hands-on ML with real datasets"},{"title":"Scikit-learn Official Tutorials","url":"https://scikit-learn.org/stable/tutorial/","type":"documentation","reason":"Official docs for the most-used ML library"},{"title":"StatQuest ML Playlist","url":"https://www.youtube.com/playlist?list=PLblh5JKOoLUICTaGLRoHQDuF_7q2GfuJF","type":"video","reason":"Visual explanations of ML concepts"}]}'
+    "resource": '{"resources":[{"title":"Stanford CS229 Machine Learning","url":"https://cs229.stanford.edu/","type":"course","reason":"Gold-standard ML course by Andrew Ng"},{"title":"Kaggle Intro to Machine Learning","url":"https://www.kaggle.com/learn/intro-to-machine-learning","type":"course","reason":"Free hands-on ML with real datasets"},{"title":"Scikit-learn Official Tutorials","url":"https://scikit-learn.org/stable/tutorial/","type":"documentation","reason":"Official docs for the most-used ML library"},{"title":"StatQuest ML Playlist","url":"https://www.youtube.com/playlist?list=PLblh5JKOoLUICTaGLRoHQDuF_7q2GfuJF","type":"video","reason":"Visual explanations of ML concepts"}]}',
+    "onboarding": '{"welcome_message": "Welcome to EduPath! I\'m your personal AI tutor. To generate the perfect, personalized roadmap for you, I just need to learn a bit about your background and goals.", "profiling_questions": ["What is your ultimate career goal or the main skill you want to master?", "How would you describe your current proficiency level in this field?", "How many hours per week can you realistically dedicate to studying?"]}'
 }
 
 
@@ -164,6 +170,18 @@ def _score_output(task, parsed, prompt):
                 score += 0.1
             if r.get("reason"):
                 score += 0.05
+        return min(score, 0.9)
+
+    elif task == "onboarding":
+        welcome = parsed.get("welcome_message", "")
+        qs = parsed.get("profiling_questions", [])
+        if not qs and not welcome:
+            return 0.0
+        score = 0.0
+        if len(welcome) > 20:
+            score += 0.3
+        if isinstance(qs, list) and len(qs) == 3:
+            score += 0.6
         return min(score, 0.9)
 
     return 0.0

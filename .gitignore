@@ -31,3 +31,6 @@ debug_*.txt
 
 # Logs
 *.log
+
+# HF Space deploy repos (separate git repos)
+hf_meta_new_space/
